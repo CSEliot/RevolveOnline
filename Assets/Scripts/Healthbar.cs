@@ -17,6 +17,8 @@ public class Healthbar : MonoBehaviour
 	private float sizeY;
 	private float sizeZ;
 
+
+	private string lastDamageDealt;
 	private const float sizeX_Max = 0.1f;
 	
 	void Start()
@@ -36,9 +38,11 @@ public class Healthbar : MonoBehaviour
 		//animator = transform.parent.GetComponent<Animator>();
 	}
 
-	public void takePercentDamage(float damagePercent){
+	public void takePercentDamage(float damagePercent, string owner){
 		currHealth -= maxHealth*damagePercent;
 		resizeHP_Bars();
+
+		lastDamageDealt = owner;
 	}
 	private void resizeHP_Bars(){
 		sizeX = sizeX_Max * (currHealth/maxHealth);
@@ -52,6 +56,7 @@ public class Healthbar : MonoBehaviour
 
 		if(isDead()){
 			Destroy(this.transform.parent.gameObject);
+			Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt);
 		}
 
 	}
