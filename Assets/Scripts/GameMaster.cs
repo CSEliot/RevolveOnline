@@ -15,6 +15,7 @@ public class GameMaster : MonoBehaviour {
 		//PLAYER VARIABLES
 		//###################################
 		public float movementSpeed; 
+		public float runningSpeed;
 		public float mouseSensetivity;// = 10.0f;
 		public float upDownRange;// = 70.0f;
 		public float jumpHeight;// = 10.0f;
@@ -26,6 +27,7 @@ public class GameMaster : MonoBehaviour {
 		//###################################
 		public float gravity;
 		public bool jumpingAllowed;
+		public bool runningAllowed;
 
 		//###################################
 		//MOD CONTENT ENABLED
@@ -48,7 +50,7 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	void Update(){
-		if(Input.GetKey("escape")){
+		if(Input.GetKeyDown("escape")){
 			Save_Values();
 			Manager.say("Attempting to quit game now, goodbye!");
 			Application.Quit();
@@ -73,6 +75,6 @@ public class GameMaster : MonoBehaviour {
 		Stream stream = new FileStream("GM.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
 		_M = (GAME_VALUES) formatter.Deserialize(stream);
 		stream.Close();
-
+		Manager.say("Loading GM likely successful");
 	}
 }

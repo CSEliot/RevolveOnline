@@ -2,6 +2,8 @@
 using System.Collections;
 using System;
 
+[RequireComponent (typeof (Rigidbody))]
+[RequireComponent (typeof (CapsuleCollider))]
 
 public class FirstPersonController : MonoBehaviour {
 
@@ -12,7 +14,13 @@ public class FirstPersonController : MonoBehaviour {
 	private Vector3 speed;
 	private float verticalSpeed;
 	private float rotLeftRight;
+	private float maxVelocityChange = 10.0f;
 
+	private Vector3 playerPos;
+	private Ray	ray;
+	private RaycastHit rayHitDown;
+	private bool isGrounded = true;
+	private float oldMoveSpeed;
 
 	//ACTION STRINGS
 	//==================================================================
@@ -22,27 +30,31 @@ public class FirstPersonController : MonoBehaviour {
 	private string FWmv_str = "_Forward";
 	public string  Fire_str = "_Fire";
 	private string Jump_str = "_Jump";
+	private string Dash_str = "_Run";
+	//==================================================================
 
-
-
-	CharacterController characterController;
+	void Awake () {
+		rigidbody.freezeRotation = true;
+		rigidbody.useGravity = false;
+	}
+	
+	
 	// Use this for initialization
 	void Start () {
 
 		setControlStrings();
-
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
-
+		oldMoveSpeed = GM._M.movementSpeed;
 		rotLeftRight = 0.0f; 
 		speed = Vector3.zero;
 		Screen.lockCursor = true;
-		characterController = GetComponent<CharacterController>();
 	}
 
 
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+
 		//player rotation
 		//left and right
 
@@ -57,56 +69,132 @@ public class FirstPersonController : MonoBehaviour {
 				
 		//Movement
 		//Jumping!!
-		if(characterController.isGrounded && Input.GetButtonDown(Jump_str)){
-			verticalSpeed = GM._M.jumpHeight;
-			Debug.Log("Jumping attempted!");
+
+
+		if(isGrounded){
+
+			Vector3 targetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
+			targetVelocity = transform.TransformDirection(targetVelocity);
+			targetVelocity *= GM._M.movementSpeed;
+			
+			// Apply a force that attempts to reach our target velocity
+			Vector3 velocity = rigidbody.velocity;
+			Vector3 velocityChange = (targetVelocity - velocity);
+			velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+			velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+			velocityChange.y = 0;
+			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+
+			// Jump
+			if (GM._M.jumpingAllowed && isGrounded && Input.GetButton(Jump_str)) {
+				rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
+			}
+
+			//Running!!
+			if(GM._M.runningAllowed && isGrounded && Input.GetButton(Dash_str)){
+				GM._M.movementSpeed = GM._M.runningSpeed;
+				Manager.say("RUNNING IS BEING ATTEMPTED!");
+			}
+			else{
+				GM._M.movementSpeed = oldMoveSpeed;
+			}
 		}
-		else if(Input.GetButtonDown(Jump_str)){
-			Debug.Log("Jumping attempted! and FAILED");
-		}
-		if(characterController.isGrounded && verticalSpeed < 0){
-			verticalSpeed = 0.0f;
-		}
-		else{
-			verticalSpeed += GM._M.gravity * Time.deltaTime;
-		}
-		//Running!!
-		if(characterController.isGrounded && Input.GetKeyDown(KeyCode.LeftShift)){
-			GM._M.movementSpeed = 10.0f;
-		}
-		else if(GM._M.movementSpeed == 10.0f){
-			GM._M.movementSpeed = 6.0f;
-		}
-		
-		
-		float forwardSpeed = Input.GetAxis(FWmv_str);
-		float sideSpeed = Input.GetAxis(Strf_str);
-		
-		speed = new Vector3( sideSpeed*GM._M.movementSpeed, verticalSpeed, forwardSpeed*GM._M.movementSpeed);
-		
-		speed = transform.rotation * speed;
-		
-		characterController.Move( speed * Time.deltaTime );
+
+		isGrounded = false;
+		rigidbody.AddForce(new Vector3 (0, -GM._M.gravity * rigidbody.mass, 0));
+		// We apply gravity manually for more tuning control
+	}
+
+	private float CalculateJumpVerticalSpeed () {
+		// From the jump height and gravity we deduce the upwards speed 
+		// for the character to reach at the apex.
+		return Mathf.Sqrt(2 * GM._M.jumpHeight * GM._M.gravity);
 	}
 
 	private void setControlStrings(){
 		string pName = gameObject.name;
 
-		if(pName == "Player 1"){
+		if(pName.Contains("1")){
 			Fire_str = "p1" + Fire_str;
 			FWmv_str = "p1" + FWmv_str;
 			Strf_str = "p1" + Strf_str;
 			Haim_str = "p1" + Haim_str;
 			Vaim_str = "p1" + Vaim_str;
 			Jump_str = "p1" + Jump_str;
-		}else if(pName == "Player 2"){
+			Dash_str = "p1" + Dash_str;
+		}else if(pName.Contains("2")){
 			Fire_str = "p2" + Fire_str;
 			FWmv_str = "p2" + FWmv_str;
 			Strf_str = "p2" + Strf_str;
 			Haim_str = "p2" + Haim_str;
 			Vaim_str = "p2" + Vaim_str;
 			Jump_str = "p2" + Jump_str;
+			Dash_str = "p2" + Dash_str;
+		}else if(pName.Contains("3")){
+			Fire_str = "p3" + Fire_str;
+			FWmv_str = "p3" + FWmv_str;
+			Strf_str = "p3" + Strf_str;
+			Haim_str = "p3" + Haim_str;
+			Vaim_str = "p3" + Vaim_str;
+			Jump_str = "p3" + Jump_str;
+			Dash_str = "p3" + Dash_str;
+		}else if(pName.Contains("4")){
+			Fire_str = "p4" + Fire_str;
+			FWmv_str = "p4" + FWmv_str;
+			Strf_str = "p4" + Strf_str;
+			Haim_str = "p4" + Haim_str;
+			Vaim_str = "p4" + Vaim_str;
+			Jump_str = "p4" + Jump_str;
+			Dash_str = "p4" + Dash_str;
 		}
 	}
 
+
+	void OnCollisionStay(Collision floor){
+
+		Vector3 tempVect; 
+		for(int i = 0; i < 6; i++){
+			tempVect = floor.contacts[i].normal;
+			if( tempVect.y > 0.3f){
+				isGrounded = true;
+				return;
+				//Manager.say("Collision normal is: " + tempVect);
+			}
+		}
+	}
+
+	void OnCollisionEnter(Collision bullet){
+		if(bullet.transform.tag == "bullet"){
+			Manager.say("OH NOEZ I WAS HIT");
+		}
+
+	}
+
 }
+
+/*
+			if(isGrounded && Input.GetButtonDown(Jump_str)){
+				rigidbody.AddForce(Vector3.up * GM._M.jumpHeight); 
+				
+				Debug.Log("Jumping attempted!");
+			}
+			else if(Input.GetButtonDown(Jump_str)){
+				Debug.Log("Jumping attempted! and FAILED");
+			}
+			//Running!!
+			if(GM._M.runningAllowed && isGrounded && Input.GetKeyDown(KeyCode.LeftShift)){
+				GM._M.movementSpeed = 10.0f;
+			}
+			else if(GM._M.movementSpeed == 10.0f){
+				GM._M.movementSpeed = 6.0f;
+			}
+			
+			
+			float forwardSpeed = Input.GetAxis(FWmv_str);
+			float sideSpeed = Input.GetAxis(Strf_str);
+			
+			speed = new Vector3( sideSpeed*, 0, forwardSpeed*GM._M.movementSpeed);
+			
+			speed = transform.rotation * speed;
+			
+			rigidbody.velocity = speed*Time.deltaTime;//(rigidbody.position + speed * Time.deltaTime);*/
