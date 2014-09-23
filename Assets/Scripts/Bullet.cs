@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour {
 	void OnCollisionEnter(Collision hitObject){
 		if(hitObject.transform.tag == "Player"){
 			Manager.say("This bullet has hit: " + hitObject.gameObject.name);
-			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.20f);
+			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.20f, owner);
 			Destroy(this.gameObject);
 		}
 		else{

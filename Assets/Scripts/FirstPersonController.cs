@@ -70,13 +70,21 @@ public class FirstPersonController : MonoBehaviour {
 		//Movement
 		//Jumping!!
 
+		//Running!!
+		if(GM._M.runningAllowed && Input.GetButtonDown(Dash_str)){
+			oldMoveSpeed = GM._M.runningSpeed;
+			Manager.say("RUNNING IS BEING ATTEMPTED!");
+		}
+		else if(Input.GetButtonUp(Dash_str)){
+			oldMoveSpeed = GM._M.movementSpeed;
+		}
+		
 
 		if(isGrounded){
 
 			Vector3 targetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
 			targetVelocity = transform.TransformDirection(targetVelocity);
-			targetVelocity *= GM._M.movementSpeed;
-			
+			targetVelocity *= oldMoveSpeed;
 			// Apply a force that attempts to reach our target velocity
 			Vector3 velocity = rigidbody.velocity;
 			Vector3 velocityChange = (targetVelocity - velocity);
@@ -90,19 +98,16 @@ public class FirstPersonController : MonoBehaviour {
 				rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
 			}
 
-			//Running!!
-			if(GM._M.runningAllowed && isGrounded && Input.GetButton(Dash_str)){
-				GM._M.movementSpeed = GM._M.runningSpeed;
-				Manager.say("RUNNING IS BEING ATTEMPTED!");
-			}
-			else{
-				GM._M.movementSpeed = oldMoveSpeed;
-			}
 		}
 
 		isGrounded = false;
 		rigidbody.AddForce(new Vector3 (0, -GM._M.gravity * rigidbody.mass, 0));
 		// We apply gravity manually for more tuning control
+
+
+		if(transform.position.y < -80.0f){
+			transform.GetChild(2).GetComponent<Healthbar>().takePercentDamage(1.0f, "God");
+		}
 	}
 
 	private float CalculateJumpVerticalSpeed () {
@@ -153,7 +158,7 @@ public class FirstPersonController : MonoBehaviour {
 	void OnCollisionStay(Collision floor){
 
 		Vector3 tempVect; 
-		for(int i = 0; i < 6; i++){
+		for(int i = 0; i < floor.contacts.Length; i++){
 			tempVect = floor.contacts[i].normal;
 			if( tempVect.y > 0.3f){
 				isGrounded = true;

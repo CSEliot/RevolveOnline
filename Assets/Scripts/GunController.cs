@@ -43,6 +43,8 @@ public class GunController : MonoBehaviour {
 		}
 	}
 
+
+	//METHOD USED IF PLAYER SPAWNS WITH THIS GUN
 	private void setEquips(GameObject player){
 		if(!equipped && player.transform.tag == "Player"){
 			owner = player.name;
@@ -54,11 +56,13 @@ public class GunController : MonoBehaviour {
 			transform.localPosition = startPosition;
 			//transform.localScale.Set(startScale.x, startScale.y, startScale.z);
 			Fire_str = transform.parent.parent.GetComponent<FirstPersonController>().Fire_str;
+			owner = transform.parent.parent.name;
 		}
 	}
+
+	//METHOD USED IF NO SPAWNING WITH GUN
 	void OnTriggerEnter(Collider player){
 		if(!equipped && player.transform.tag == "Player"){
-			Manager.say("O SHI- I was collided");
 			transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 			transform.parent = player.transform.GetChild(0).transform;
 			equipped = true;
@@ -66,6 +70,7 @@ public class GunController : MonoBehaviour {
 			transform.localPosition = startPosition;
 			//transform.localScale.Set(startScale.x, startScale.y, startScale.z);
 			Fire_str = transform.parent.parent.GetComponent<FirstPersonController>().Fire_str;
+			owner = transform.parent.parent.name;
 		}
 	}
 }
