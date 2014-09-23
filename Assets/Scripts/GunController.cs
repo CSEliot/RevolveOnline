@@ -15,6 +15,8 @@ public class GunController : MonoBehaviour {
 
 	private GameMaster GM;
 
+	private string owner;
+
 	// Use this for initialization
 	void Start () {
 
@@ -31,18 +33,20 @@ public class GunController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Quaternion tempRot = gameObject.transform.rotation;
+
 		if(equipped && Input.GetButtonDown(Fire_str)){
 			Manager.say("I FIRED");
 			GameObject tempBullet;
-			tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position,  Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
-			tempBullet.rigidbody.velocity = transform.TransformDirection(Vector3.forward * GM._M.bulletSpeed_Basic);
-
+			tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
+			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * GM._M.bulletSpeed_Basic, owner);
 		}
 	}
 
 	private void setEquips(GameObject player){
 		if(!equipped && player.transform.tag == "Player"){
-			Manager.say("O SHI- I was collided");
+			owner = player.name;
+			Manager.say("Owner collided with: " + owner);
 			transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 			transform.parent = player.transform.GetChild(0).transform;
 			equipped = true;
