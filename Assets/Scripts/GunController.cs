@@ -46,7 +46,8 @@ public class GunController : MonoBehaviour {
 
 	//METHOD USED IF PLAYER SPAWNS WITH THIS GUN
 	private void setEquips(GameObject player){
-		if(!equipped && player.transform.tag == "Player"){
+		if(!equipped && player.transform.tag == "Player" && !player.GetComponent<FirstPersonController>().gunEquipped){
+			player.GetComponent<FirstPersonController>().gunEquipped = true;
 			owner = player.name;
 			Manager.say("Owner collided with: " + owner);
 			transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -62,7 +63,8 @@ public class GunController : MonoBehaviour {
 
 	//METHOD USED IF NO SPAWNING WITH GUN
 	void OnTriggerEnter(Collider player){
-		if(!equipped && player.transform.tag == "Player"){
+		if(!equipped && player.transform.tag == "Player" && !player.GetComponent<FirstPersonController>().gunEquipped){
+			player.GetComponent<FirstPersonController>().gunEquipped = true;
 			transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 			transform.parent = player.transform.GetChild(0).transform;
 			equipped = true;

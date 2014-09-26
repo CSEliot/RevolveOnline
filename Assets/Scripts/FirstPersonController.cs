@@ -7,6 +7,8 @@ using System;
 
 public class FirstPersonController : MonoBehaviour {
 
+	public bool gunEquipped = false; //equiped gun?
+
 
 	private GameMaster GM;
 
