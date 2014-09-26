@@ -19,7 +19,7 @@ public class GameMaster : MonoBehaviour {
 		public float mouseSensetivity;// = 10.0f;
 		public float upDownRange;// = 70.0f;
 		public float jumpHeight;// = 10.0f;
-
+		private float jumpCount;
 		public float maxHealth;
 
 		//###################################
