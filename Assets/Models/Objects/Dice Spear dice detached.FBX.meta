@@ -1,13 +1,25 @@
 fileFormatVersion: 2
-guid: f7a5a449ebea9ce4db17e6edbfec911a
+guid: 22d2f866b9f022b4f8537494cd19e1c6
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cylinder009
+    100000: Cylinder001
+    100002: //RootNode
+    100004: Hedra001
+    100006: Tape001
+    100008: Tape001.Target
+    400000: Cylinder001
+    400002: //RootNode
+    400004: Hedra001
+    400006: Tape001
+    400008: Tape001.Target
+    2300000: Cylinder001
+    2300002: Hedra001
+    3300000: Cylinder001
+    3300002: Hedra001
+    4300000: Hedra001
+    4300002: Cylinder001
+    7400000: Take 001
     9500000: //RootNode
   materials:
     importMaterials: 1
