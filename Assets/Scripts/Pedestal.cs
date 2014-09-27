@@ -20,7 +20,7 @@ public class Pedestal : MonoBehaviour {
 		//transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, currentRotation, this.transform.eulerAngles.z);
 		transform.Rotate(0, currentRotation, 0);
 		if(transform.childCount == 0){
-			Manager.say("Pedestal Destroyed!");
+			Manager.say("Pedestal Destroyed!", "eliot");
 			Destroy(gameObject);
 		}
 	}

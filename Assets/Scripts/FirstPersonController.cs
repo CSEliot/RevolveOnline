@@ -75,7 +75,7 @@ public class FirstPersonController : MonoBehaviour {
 		//Running!!
 		if(GM._M.runningAllowed && Input.GetButtonDown(Dash_str)){
 			oldMoveSpeed = GM._M.runningSpeed;
-			Manager.say("RUNNING IS BEING ATTEMPTED!");
+			Manager.say("RUNNING IS BEING ATTEMPTED!", "eliot");
 		}
 		else if(Input.GetButtonUp(Dash_str)){
 			oldMoveSpeed = GM._M.movementSpeed;
@@ -169,14 +169,6 @@ public class FirstPersonController : MonoBehaviour {
 			}
 		}
 	}
-
-	void OnCollisionEnter(Collision bullet){
-		if(bullet.transform.tag == "bullet"){
-			Manager.say("OH NOEZ I WAS HIT");
-		}
-
-	}
-
 }
 
 /*
