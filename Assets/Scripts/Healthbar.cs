@@ -46,7 +46,7 @@ public class Healthbar : MonoBehaviour
 	}
 	private void resizeHP_Bars(){
 		sizeX = sizeX_Max * (currHealth/maxHealth);
-		Manager.say("SizeX is now: " + sizeX);
+		Manager.say("SizeX is now: " + sizeX, "eliot");
 		transform.GetChild(0).transform.localScale = new Vector3(sizeX, sizeY, sizeZ);// 10f, 10f ,10f);//
 		transform.GetChild(2).transform.localScale = new Vector3(sizeX, sizeY, sizeZ);//10f, 10f ,10f);//
 	}
@@ -56,7 +56,7 @@ public class Healthbar : MonoBehaviour
 
 		if(isDead()){
 			Destroy(this.transform.parent.gameObject);
-			Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt);
+			Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt, "eliot");
 		}
 
 	}
