@@ -44,9 +44,9 @@ public class Bullet_Basic : MonoBehaviour {
 		}
 	}
 
-	public void setSpeedandOwner(Vector3 speed, string owner){
-		this.speed = speed;
-		this.owner = owner;
+	public void setSpeedandOwner(Vector3 setSpeed, string setOwner){
+		speed = setSpeed;
+		owner = setOwner;
 		rigidbody.AddRelativeForce(speed);
 	}
 }

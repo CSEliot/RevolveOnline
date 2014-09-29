@@ -13,7 +13,7 @@ public class FirstPersonController : MonoBehaviour {
 	private GameMaster GM;
 
 	private float rotUpDown;// = 0;
-	private Vector3 speed;
+	//private Vector3 speed;
 	private float verticalSpeed;
 	private float rotLeftRight;
 	private float maxVelocityChange = 10.0f;
@@ -48,7 +48,7 @@ public class FirstPersonController : MonoBehaviour {
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
 		oldMoveSpeed = GM._M.movementSpeed;
 		rotLeftRight = 0.0f; 
-		speed = Vector3.zero;
+		//speed = Vector3.zero;
 		Screen.lockCursor = true;
 	}
 
