@@ -4,11 +4,11 @@ using System.Collections;
 public class Gun_Basic : MonoBehaviour {
 
 	private Vector3 startPosition = new Vector3(.3f, -0.09f, 0.66f);
-	private Vector3 startRotation = new Vector3(0f,0f,0f);
-	private Vector3 startScale = new Vector3(0.17989f, .13f, 0.56067f);
+	//private Vector3 startRotation = new Vector3(0f,0f,0f);
+	//private Vector3 startScale = new Vector3(0.17989f, .13f, 0.56067f);
 
 	private bool equipped;
-	bool spawnedEquipped;
+    public bool spawnedEquipped;
 	private string Fire_str = " "; 
 
 	public GameObject bullet_prefab;
@@ -38,6 +38,7 @@ public class Gun_Basic : MonoBehaviour {
 		if(equipped && Input.GetButtonDown(Fire_str)){
 			Manager.say("I FIRED", "eliot");
 			GameObject tempBullet;
+            //the gun has a bullet spawn component found via getchild(0).transform.position 
 			tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
 			tempBullet.GetComponent<Bullet_Basic>().setSpeedandOwner(Vector3.up * GM._M.bulletSpeed_Basic, owner);
 		}

@@ -31,8 +31,8 @@ public class Healthbar : MonoBehaviour
 		sizeZ = transform.GetChild(0).localScale.z;
 		maxHealth = GM._M.maxHealth; // bar size, this never changes
 		currHealth = maxHealth; //transform bar size
-		float tempX = transform.GetChild(0).transform.localScale.x;
-		tempX = 100f;
+		//float tempX = transform.GetChild(0).transform.localScale.x;
+		//tempX = 100f;
 		//size = GameObject.Find("Green").transform.localScale.x;
 		//Debug.Log("Size after assigned=" + size);
 		//animator = transform.parent.GetComponent<Animator>();
