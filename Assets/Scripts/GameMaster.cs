@@ -66,7 +66,7 @@ public class GameMaster : MonoBehaviour {
 			Application.Quit();
 
 		}
-		if(GameObject.FindGameObjectsWithTag("Player") == 1){
+		if(GameObject.FindGameObjectsWithTag("Player").Length == 1){
 		        gameOver = true;
 		}   
 	}
