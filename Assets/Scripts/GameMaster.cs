@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
-
+using System.Reflection;
 
 public class GameMaster : MonoBehaviour {
 
@@ -21,6 +21,8 @@ public class GameMaster : MonoBehaviour {
 		public float jumpHeight;// = 10.0f;
 		private float jumpCount;
 		public float maxHealth;
+
+		public bool doYouEvenLift;
 
 		//###################################
 		//ENVIRONMENT VARIABLES

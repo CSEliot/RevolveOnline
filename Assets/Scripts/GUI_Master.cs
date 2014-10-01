@@ -15,7 +15,7 @@ public class GUI_Master : MonoBehaviour {
 	
 	}
 
-	void OnGUI(){
-		GUILayout.Box("Game Variables", varia);
-	}
+//	void OnGUI(){
+//		GUILayout.Box("Game Variables", varia);
+//	}
 }
