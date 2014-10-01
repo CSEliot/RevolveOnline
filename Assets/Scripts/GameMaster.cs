@@ -48,6 +48,7 @@ public class GameMaster : MonoBehaviour {
 	public GAME_VALUES _M;
 	private int sizeX = 150;
 	private int sizeY = 150;
+	private bool gameOver = false;
 
 	void Start(){
 		Save_Values();
@@ -65,6 +66,9 @@ public class GameMaster : MonoBehaviour {
 			Application.Quit();
 
 		}
+		if(GameObject.FindGameObjectsWithTag("Player") == 1){
+		        gameOver = true;
+		}   
 	}
 
 
@@ -85,5 +89,9 @@ public class GameMaster : MonoBehaviour {
 		_M = (GAME_VALUES) formatter.Deserialize(stream);
 		stream.Close();
 		Manager.say("Loading GM likely successful", "always");
+	}
+	
+	private bool isGameOver(){
+		return gameOver;
 	}
 }
