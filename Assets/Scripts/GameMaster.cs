@@ -21,8 +21,12 @@ public class GameMaster : MonoBehaviour {
 		public float jumpHeight;// = 10.0f;
 		private float jumpCount;
 		public float maxHealth;
+		public float maxHealth2;
+		public float maxHealth3;
+		public float maxHealth4;
+		public float maxHealth5;
+		public float maxHealth6;
 
-		public bool doYouEvenLift;
 
 		//###################################
 		//ENVIRONMENT VARIABLES
@@ -51,7 +55,7 @@ public class GameMaster : MonoBehaviour {
 	private bool gameOver = false;
 
 	void Start(){
-		Save_Values();
+		//Save_Values();
 		Load_Values();
 		gameObject.camera.pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
 		if(_M.miniMapEnabled){
