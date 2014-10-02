@@ -5,19 +5,21 @@ using System;
 
 public class ModGUI : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public Vector2 selection;
+	public Rect windowRect;
+
+	void Start()
+	{
+		windowRect = new Rect(Screen.width/2-200, Screen.height/2-200, 400, 400);
 	}
 
-	void OnGUI()
+	void OnGUI() {
+		windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "Poop");
+	}
+
+	void DoMyWindow(int windowID) 
 	{
-		//GUILayout.BeginArea (new Rect (0, 0, 200, Screen.height));
+		selection = GUILayout.BeginScrollView(selection, GUILayout.Width(400), GUILayout.Height(400));
 
 		//get dat game masta
 		GameObject gm = GameObject.FindGameObjectWithTag ("GM");
@@ -48,11 +50,11 @@ public class ModGUI : MonoBehaviour {
 			GUILayout.BeginVertical();
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(float)))
 			{
-				if(GUILayout.Button("+"))
+				if(GUILayout.Button("-", GUILayout.Width(20)))
 				{
 					//box in that shit and modify
 					object p = (object)gm.GetComponent<GameMaster>()._M;
-					m.SetValue(p, (float)m.GetValue(gm.GetComponent<GameMaster>()._M)+1f);
+					m.SetValue(p, (float)m.GetValue(gm.GetComponent<GameMaster>()._M)-1f);
 					gm.GetComponent<GameMaster>()._M = (GameMaster.GAME_VALUES)p;
 				}
 			}
@@ -69,17 +71,20 @@ public class ModGUI : MonoBehaviour {
 			GUILayout.BeginVertical();
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(float)))
 			{
-				if(GUILayout.Button("-"))
+				if(GUILayout.Button("+", GUILayout.Width(20)))
 				{
 					//box in that shit and modify
 					object p = (object)gm.GetComponent<GameMaster>()._M;
-					m.SetValue(p, (float)m.GetValue(gm.GetComponent<GameMaster>()._M)-1f);
+					m.SetValue(p, (float)m.GetValue(gm.GetComponent<GameMaster>()._M)+1f);
 					gm.GetComponent<GameMaster>()._M = (GameMaster.GAME_VALUES)p; 
 				}
 			}
 			GUILayout.EndVertical();
+
+			GUILayout.Space(125F);
+
 			GUILayout.EndHorizontal();
 		}
-		//GUILayout.EndArea ();
+		GUILayout.EndScrollView();
 	}
 }
