@@ -8,18 +8,24 @@ public class ModGUI : MonoBehaviour {
 	public Vector2 selection;
 	public Rect windowRect;
 
+	private GameMaster.GAME_VALUES original; 
+
+	public bool changed = false;
+
 	void Start()
 	{
-		windowRect = new Rect(Screen.width/2-200, Screen.height/2-200, 400, 400);
+		windowRect = new Rect(Screen.width/2-200, Screen.height/2-300, 400, Screen.height-200);
+		original = GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M;
 	}
 
 	void OnGUI() {
-		windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "Poop");
+		if(GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().isGameOver())
+			windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "Poop");
 	}
 
 	void DoMyWindow(int windowID) 
 	{
-		selection = GUILayout.BeginScrollView(selection, GUILayout.Width(400), GUILayout.Height(400));
+		selection = GUILayout.BeginScrollView(selection, GUILayout.Width(400), GUILayout.Height(Screen.height-500));
 
 		//get dat game masta
 		GameObject gm = GameObject.FindGameObjectWithTag ("GM");
@@ -86,5 +92,21 @@ public class ModGUI : MonoBehaviour {
 			GUILayout.EndHorizontal();
 		}
 		GUILayout.EndScrollView();
+
+		GUILayout.Space(20F);
+
+
+		if(!original.Equals(GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M))
+		{
+			if(GUILayout.Button("Confirm"))
+			{
+				GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().Save_Values();
+				Application.LoadLevel(Application.loadedLevel);
+			}
+			if(GUILayout.Button("Revert"))
+			{
+				GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M = original;
+			}
+		}
 	}
 }
