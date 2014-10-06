@@ -76,7 +76,7 @@ public class GameMaster : MonoBehaviour {
 	}
 
 
-	private void Save_Values(){
+	public void Save_Values(){
 		GameMaster masterScript;
 		masterScript = GameObject.Find("Game Master").GetComponent<GameMaster>();
 		Manager.say("Attempting to save GM", "always");
@@ -95,7 +95,7 @@ public class GameMaster : MonoBehaviour {
 		Manager.say("Loading GM likely successful", "always");
 	}
 	
-	private bool isGameOver(){
+	public bool isGameOver(){
 		return gameOver;
 	}
 }
