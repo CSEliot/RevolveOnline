@@ -64,7 +64,8 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	void Update(){
-		if(Input.GetKeyDown("escape")){
+		if(Input.GetKeyDown("escape"))
+		{
 			Save_Values();
 			Manager.say("Attempting to quit game now, goodbye!", "always");
 			Application.Quit();
