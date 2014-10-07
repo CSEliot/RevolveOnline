@@ -14,7 +14,7 @@ public class ModGUI : MonoBehaviour {
 
 	void Start()
 	{
-		windowRect = new Rect(Screen.width/2-200, Screen.height/2-300, 400, Screen.height-200);
+		windowRect = new Rect(Screen.width/2-200, Screen.height/2-300, 400, Screen.height-500);
 		original = GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M;
 	}
 
@@ -36,7 +36,6 @@ public class ModGUI : MonoBehaviour {
 		//get dem properties
 		FieldInfo[] properties = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-		Debug.Log (properties.Length);
 		foreach(FieldInfo m in properties)
 		{
 			//this is the first column with names and values
@@ -95,18 +94,63 @@ public class ModGUI : MonoBehaviour {
 
 		GUILayout.Space(20F);
 
-
-		if(!original.Equals(GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M))
+		if(original.Equals(gm.GetComponent<GameMaster>()._M))
 		{
-			if(GUILayout.Button("Confirm"))
+			GUILayout.Box("Make A Change");
+		}
+		else
+		{
+			if(oneChangeMade(original))
 			{
-				GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().Save_Values();
-				Application.LoadLevel(Application.loadedLevel);
+				if(GUILayout.Button("Confirm"))
+				{
+					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().Save_Values();
+					Application.LoadLevel(Application.loadedLevel);
+				}
+				if(GUILayout.Button("Revert"))
+				{
+					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M = original;
+				}
 			}
-			if(GUILayout.Button("Revert"))
+			else
 			{
-				GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M = original;
+				GUILayout.Box("Only One Change Per Win");
 			}
 		}
+	}
+
+	private bool oneChangeMade(GameMaster.GAME_VALUES mm)
+	{
+		GameObject gm = GameObject.FindGameObjectWithTag ("GM");
+		
+		//get dat GAME_VALUES type
+		Type type_M = gm.GetComponent<GameMaster>()._M.GetType();
+		Type type = mm.GetType ();
+		
+		//get dem properties
+		FieldInfo[] properties_M = type_M.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+		FieldInfo[] properties = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+		int changes = 0;
+
+		for(int i = 0; i < properties_M.Length; i++)
+		{
+			FieldInfo m = properties_M[i];
+			FieldInfo m2 = properties[i];
+
+			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(float)) && m2.GetValue(mm).GetType().Equals(typeof(float)))
+			{
+				changes += (int)Mathf.Abs((float)m.GetValue(gm.GetComponent<GameMaster>()._M)-(float)m2.GetValue(mm));
+			}
+			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(bool)) && m2.GetValue(mm).GetType().Equals(typeof(bool)))
+			{
+				if(!m.GetValue(gm.GetComponent<GameMaster>()._M).Equals(m2.GetValue(mm)))
+				{
+					changes += 1;
+				}
+			}
+		}
+
+		return (changes == 1) ? true : false;
 	}
 }
