@@ -14,7 +14,7 @@ public class ModGUI : MonoBehaviour {
 
 	void Start()
 	{
-		windowRect = new Rect(Screen.width/2-200, Screen.height/2-300, 400, Screen.height-500);
+		windowRect = new Rect(Screen.width/2-((Screen.width*.4f)/2), Screen.height/2-((Screen.height*.4f)/2), Screen.width*.40f, Screen.height*.40f);
 		original = GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M;
 	}
 
@@ -25,7 +25,7 @@ public class ModGUI : MonoBehaviour {
 
 	void DoMyWindow(int windowID) 
 	{
-		selection = GUILayout.BeginScrollView(selection, GUILayout.Width(400), GUILayout.Height(Screen.height-500));
+		selection = GUILayout.BeginScrollView(selection, GUILayout.Width(Screen.width*.40f), GUILayout.Height(Screen.height*.40f));
 
 		//get dat game masta
 		GameObject gm = GameObject.FindGameObjectWithTag ("GM");
