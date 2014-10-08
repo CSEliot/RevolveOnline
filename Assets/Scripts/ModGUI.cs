@@ -9,8 +9,11 @@ public class ModGUI : MonoBehaviour {
 	public Rect windowRect;
 
 	private GameMaster.GAME_VALUES original; 
+	private float[] changes_made = new float[256];
 
 	public bool changed = false;
+
+	public int MAX_CHANGES = 1;
 
 	void Start()
 	{
@@ -20,7 +23,7 @@ public class ModGUI : MonoBehaviour {
 
 	void OnGUI() {
 		if(GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().isGameOver())
-			windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "Poop");
+			windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "Game Modifiers");
 	}
 
 	void DoMyWindow(int windowID) 
@@ -36,20 +39,38 @@ public class ModGUI : MonoBehaviour {
 		//get dem properties
 		FieldInfo[] properties = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
+		int count = 0;
+
+		Color default__ = GUI.color;
+
 		foreach(FieldInfo m in properties)
 		{
+			if(oneChangeMade(original) && Mathf.Abs(changes_made[count]) == MAX_CHANGES)
+			{
+				GUI.color = Color.green;
+				Debug.Log("spooop");
+			}
+			else if(Mathf.Abs(changes_made[count]) > 0)
+				GUI.color = Color.red;
+			else
+				GUI.color = default__;
+
 			//this is the first column with names and values
 			GUILayout.BeginHorizontal();
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(float)))
 			{
 				//so basically just make a box with info if it's a float
-				GUILayout.Box(m.Name+": "+m.GetValue(gm.GetComponent<GameMaster>()._M), GUILayout.Width(200));
+				if(changes_made[count] > 0) GUILayout.Box(m.Name+": "+m.GetValue(original)+"(+"+changes_made[count]+")", GUILayout.Width(300));
+				else if(changes_made[count] < 0) GUILayout.Box(m.Name+": "+"("+m.GetValue(original)+changes_made[count]+")", GUILayout.Width(300));
+				else GUILayout.Box(m.Name+": "+m.GetValue(original), GUILayout.Width(300));
 			}
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(bool)))
 			{
 				//make a box with just the name if it's a boolean
 				GUILayout.Box(m.Name+": ", GUILayout.Width(200));
 			}
+
+			GUI.color = default__;
 
 			//this column has the '+' signs and toggle buttons
 			GUILayout.BeginVertical();
@@ -89,10 +110,14 @@ public class ModGUI : MonoBehaviour {
 			GUILayout.Space(125F);
 
 			GUILayout.EndHorizontal();
+
+			count++;
 		}
 		GUILayout.EndScrollView();
 
 		GUILayout.Space(20F);
+
+		oneChangeMade (original);
 
 		if(original.Equals(gm.GetComponent<GameMaster>()._M))
 		{
@@ -115,6 +140,10 @@ public class ModGUI : MonoBehaviour {
 			else
 			{
 				GUILayout.Box("Only One Change Per Win");
+				if(GUILayout.Button("Revert"))
+				{
+					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M = original;
+				}
 			}
 		}
 	}
@@ -133,24 +162,32 @@ public class ModGUI : MonoBehaviour {
 
 		int changes = 0;
 
+
 		for(int i = 0; i < properties_M.Length; i++)
 		{
 			FieldInfo m = properties_M[i];
 			FieldInfo m2 = properties[i];
 
+			changes_made [i] = 0;
+
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(float)) && m2.GetValue(mm).GetType().Equals(typeof(float)))
 			{
 				changes += (int)Mathf.Abs((float)m.GetValue(gm.GetComponent<GameMaster>()._M)-(float)m2.GetValue(mm));
+				if((int)Mathf.Abs((float)m.GetValue(gm.GetComponent<GameMaster>()._M)-(float)m2.GetValue(mm)) > 0)
+				{
+					changes_made[i] = ((float)m.GetValue(gm.GetComponent<GameMaster>()._M)-(float)m2.GetValue(mm));
+				}
 			}
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(bool)) && m2.GetValue(mm).GetType().Equals(typeof(bool)))
 			{
 				if(!m.GetValue(gm.GetComponent<GameMaster>()._M).Equals(m2.GetValue(mm)))
 				{
 					changes += 1;
+					if((bool)m.GetValue(gm.GetComponent<GameMaster>()._M) == true) changes_made[i] = 1.0F; else changes_made[i] = -1.0f;
 				}
 			}
 		}
 
-		return (changes == 1) ? true : false;
+		return (changes == MAX_CHANGES) ? true : false;
 	}
 }
