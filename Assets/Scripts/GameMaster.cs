@@ -45,6 +45,7 @@ public class GameMaster : MonoBehaviour {
 
 	}
 
+	private string magicWinButton = "w";
 	public GAME_VALUES _M;
 	private int sizeX = 150;
 	private int sizeY = 150;
@@ -60,12 +61,24 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	void Update(){
-		if(Input.GetKeyDown("escape"))
+		if(Input.GetKeyDown("q"))
 		{
 			Save_Values();
 			Manager.say("Attempting to quit game now, goodbye!", "always");
 			Application.Quit();
 
+		}
+		if(Input.GetKeyDown("w")){
+			Manager.say("You pressed the magic win button!", "eliot");
+			GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+			for(int i = 0; i < allPlayers.Length-1; i++){
+				allPlayers[i].SetActive(false); //disables all but one player, making a winner.
+			}
+		}
+		if(Input.GetKeyDown("escape"))
+		{
+			Screen.lockCursor = false;
+			
 		}
 		if(GameObject.FindGameObjectsWithTag("Player").Length == 1){
 		        gameOver = true;
