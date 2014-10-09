@@ -68,7 +68,7 @@ public class GameMaster : MonoBehaviour {
 			Application.Quit();
 
 		}
-		if(Input.GetKeyDown("w")){
+		if(Input.GetKeyDown("\\")){
 			Manager.say("You pressed the magic win button!", "eliot");
 			GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
 			for(int i = 0; i < allPlayers.Length-1; i++){
