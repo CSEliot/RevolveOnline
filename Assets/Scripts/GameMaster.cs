@@ -23,6 +23,7 @@ public class GameMaster : MonoBehaviour {
 		public float maxHealth;
 		public bool invertControls;
 		public bool invertMouseY;
+		public bool noStrafe;
 
 		//###################################
 		//ENVIRONMENT VARIABLES

@@ -91,6 +91,9 @@ public class FirstPersonController : MonoBehaviour {
 			else
 				targetVelocity = new Vector3(-Input.GetAxis(Strf_str), 0, -Input.GetAxis(FWmv_str));
 
+			if(GM._M.noStrafe)
+				targetVelocity.x = 0;
+
 			targetVelocity = transform.TransformDirection(targetVelocity);
 			targetVelocity *= oldMoveSpeed;
 			// Apply a force that attempts to reach our target velocity
