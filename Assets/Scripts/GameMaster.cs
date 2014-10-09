@@ -21,12 +21,7 @@ public class GameMaster : MonoBehaviour {
 		public float jumpHeight;// = 10.0f;
 		private float jumpCount;
 		public float maxHealth;
-		public float maxHealth2;
-		public float maxHealth3;
-		public float maxHealth4;
-		public float maxHealth5;
-		public float maxHealth6;
-
+		public bool invertControls;
 
 		//###################################
 		//ENVIRONMENT VARIABLES
