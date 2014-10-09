@@ -45,7 +45,7 @@ public class ModGUI : MonoBehaviour {
 
 		foreach(FieldInfo m in properties)
 		{
-			if(oneChangeMade(original) && Mathf.Abs(changes_made[count]) == MAX_CHANGES)
+			if(oneChangeMade(original) && Mathf.Abs(changes_made[count]) > 0)
 			{
 				GUI.color = Color.green;
 			}
@@ -138,7 +138,7 @@ public class ModGUI : MonoBehaviour {
 			}
 			else
 			{
-				GUILayout.Box("Only One Change Per Win");
+				GUILayout.Box("Only "+MAX_CHANGES+" Changes May Be Made");
 				if(GUILayout.Button("Revert"))
 				{
 					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M = original;
@@ -167,7 +167,7 @@ public class ModGUI : MonoBehaviour {
 			FieldInfo m = properties_M[i];
 			FieldInfo m2 = properties[i];
 
-			changes_made [i] = 0;
+			changes_made[i] = 0;
 
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(float)) && m2.GetValue(mm).GetType().Equals(typeof(float)))
 			{
