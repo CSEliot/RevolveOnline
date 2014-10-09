@@ -6,6 +6,7 @@ syntax: glob
 *.pidb
 *.unitypackage
 *.suo
+*.unityproj
  
 syntax: regexp
 ^Builds/.*
