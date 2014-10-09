@@ -63,7 +63,8 @@ public class FirstPersonController : MonoBehaviour {
 		rotLeftRight = Input.GetAxis(Haim_str)*GM._M.mouseSensetivity;
 		transform.Rotate(0, rotLeftRight, 0);
 		//up and down (with camera)
-		rotUpDown -= Input.GetAxis(Vaim_str)*GM._M.mouseSensetivity;
+		if(GM._M.invertMouseY) rotUpDown -= -Input.GetAxis(Vaim_str)*GM._M.mouseSensetivity;
+		else rotUpDown -= Input.GetAxis(Vaim_str)*GM._M.mouseSensetivity;
 		rotUpDown = Mathf.Clamp(rotUpDown, -GM._M.upDownRange, GM._M.upDownRange);
 		
 		transform.GetChild(0).transform.localRotation = Quaternion.Euler(rotUpDown,0,0);
