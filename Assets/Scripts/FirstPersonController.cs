@@ -84,15 +84,22 @@ public class FirstPersonController : MonoBehaviour {
 
 		if(isGrounded){
 
-			Vector3 targetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
+			Vector3 targetVelocity;
+			if(!GM._M.invertControls)
+				targetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
+			else
+				targetVelocity = new Vector3(-Input.GetAxis(Strf_str), 0, -Input.GetAxis(FWmv_str));
+
 			targetVelocity = transform.TransformDirection(targetVelocity);
 			targetVelocity *= oldMoveSpeed;
 			// Apply a force that attempts to reach our target velocity
 			Vector3 velocity = rigidbody.velocity;
 			Vector3 velocityChange = (targetVelocity - velocity);
+
 			velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
 			velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
 			velocityChange.y = 0;
+
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
 			// Jump

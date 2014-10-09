@@ -48,7 +48,6 @@ public class ModGUI : MonoBehaviour {
 			if(oneChangeMade(original) && Mathf.Abs(changes_made[count]) == MAX_CHANGES)
 			{
 				GUI.color = Color.green;
-				Debug.Log("spooop");
 			}
 			else if(Mathf.Abs(changes_made[count]) > 0)
 				GUI.color = Color.red;
@@ -67,7 +66,7 @@ public class ModGUI : MonoBehaviour {
 			if(m.GetValue(gm.GetComponent<GameMaster>()._M).GetType().Equals(typeof(bool)))
 			{
 				//make a box with just the name if it's a boolean
-				GUILayout.Box(m.Name+": ", GUILayout.Width(200));
+				GUILayout.Box(m.Name+": ", GUILayout.Width(300));
 			}
 
 			GUI.color = default__;
