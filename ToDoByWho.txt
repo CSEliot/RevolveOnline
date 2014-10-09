@@ -1,0 +1,21 @@
+Eliot -- 
+CONTENT:
+  - Kill Assist Credit
+SYSTEM:
+  - Content Enable/Disable GUI Design
+  - Robot Character
+  - Level Selection
+  - Character Selection
+  - Get Character to position gun, not gun positioning gun.
+  - Get Character listening for bullet???
+
+Gram -- 
+CONTENT:
+  - blah
+SYSTEM:
+  - blah
+
+Nate -- 
+CONTENT: 
+SYSTEM:
+  - Sound Operation
