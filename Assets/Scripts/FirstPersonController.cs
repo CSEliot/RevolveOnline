@@ -23,6 +23,9 @@ public class FirstPersonController : MonoBehaviour {
 	private RaycastHit rayHitDown;
 	private bool isGrounded = true;
 	private float oldMoveSpeed;
+	private float totalJumpsAllowed;
+	private float totalJumpsMade;
+	private float floorInclineThreshold = 0.3f;
 
 	//ACTION STRINGS
 	//==================================================================
@@ -48,8 +51,8 @@ public class FirstPersonController : MonoBehaviour {
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
 		oldMoveSpeed = GM._M.movementSpeed;
 		rotLeftRight = 0.0f; 
+		totalJumpsAllowed = GM._M.jumpCount;
 		//speed = Vector3.zero;
-		Screen.lockCursor = true;
 	}
 
 
@@ -71,8 +74,6 @@ public class FirstPersonController : MonoBehaviour {
 
 				
 		//Movement
-		//Jumping!!
-
 		//Running!!
 		if(GM._M.runningAllowed && Input.GetButtonDown(Dash_str)){
 			oldMoveSpeed = GM._M.runningSpeed;
@@ -82,7 +83,8 @@ public class FirstPersonController : MonoBehaviour {
 			oldMoveSpeed = GM._M.movementSpeed;
 		}
 		
-
+		
+		//Jumping!!
 		if(isGrounded){
 
 			Vector3 targetVelocity;
@@ -107,8 +109,9 @@ public class FirstPersonController : MonoBehaviour {
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
 			// Jump
-			if (GM._M.jumpingAllowed && isGrounded && Input.GetButton(Jump_str)) {
+			if (GM._M.jumpingAllowed && (isGrounded||totalJumpsMade < totalJumpsAllowed)&& Input.GetButton(Jump_str)) {
 				rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
+				totalJumpsMade += 1;
 			}
 
 		}
@@ -173,8 +176,9 @@ public class FirstPersonController : MonoBehaviour {
 		Vector3 tempVect; 
 		for(int i = 0; i < floor.contacts.Length; i++){
 			tempVect = floor.contacts[i].normal;
-			if( tempVect.y > 0.3f){
+			if( tempVect.y > floorInclineThreshold){
 				isGrounded = true;
+				totalJumpsMade = 0;
 				return;
 				//Manager.say("Collision normal is: " + tempVect);
 			}
