@@ -13,7 +13,7 @@ public class ModGUI : MonoBehaviour {
 
 	public bool changed = false;
 
-	public int MAX_CHANGES = 1;
+	public int MAX_CHANGES = 4;
 
 	void Start()
 	{
