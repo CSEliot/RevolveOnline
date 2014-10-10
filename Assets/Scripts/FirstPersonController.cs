@@ -109,9 +109,11 @@ public class FirstPersonController : MonoBehaviour {
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
 			// Jump
-			if (GM._M.jumpingAllowed && (isGrounded||totalJumpsMade < totalJumpsAllowed)&& Input.GetButton(Jump_str)) {
+			//Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
+			if (GM._M.jumpingAllowed && totalJumpsMade <= totalJumpsAllowed&& Input.GetButtonDown(Jump_str)) {
+				totalJumpsMade =1;
+				Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
 				rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
-				totalJumpsMade += 1;
 			}
 
 		}
