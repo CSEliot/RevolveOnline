@@ -85,7 +85,7 @@ public class FirstPersonController : MonoBehaviour {
 		
 		
 		//Jumping!!
-		if(isGrounded){
+		if(totalJumpsMade == 0){
 
 			Vector3 targetVelocity;
 			if(!GM._M.invertControls)
@@ -108,17 +108,21 @@ public class FirstPersonController : MonoBehaviour {
 
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
-			// Jump
-			//Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
-			if (GM._M.jumpingAllowed && totalJumpsMade <= totalJumpsAllowed&& Input.GetButtonDown(Jump_str)) {
-				totalJumpsMade =1;
-				Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
-				rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
+			if(Input.GetButtonDown(Jump_str)){
+				Manager.say("OH SHIT I JUMPED NIGAA", "eliot");
 			}
 
+			// Jump
+			//Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
+
+		}
+		if (GM._M.jumpingAllowed && totalJumpsMade <= totalJumpsAllowed&& Input.GetButtonDown(Jump_str)) {
+			totalJumpsMade ++;
+			isGrounded = false;
+			Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
+			rigidbody.velocity = new Vector3(rigidbody.velocity.x, CalculateJumpVerticalSpeed(), rigidbody.velocity.z);
 		}
 
-		isGrounded = false;
 		rigidbody.AddForce(new Vector3 (0, -GM._M.gravity * rigidbody.mass, 0));
 		// We apply gravity manually for more tuning control
 
@@ -175,14 +179,16 @@ public class FirstPersonController : MonoBehaviour {
 
 	void OnCollisionStay(Collision floor){
 
-		Vector3 tempVect; 
-		for(int i = 0; i < floor.contacts.Length; i++){
-			tempVect = floor.contacts[i].normal;
-			if( tempVect.y > floorInclineThreshold){
-				isGrounded = true;
-				totalJumpsMade = 0;
-				return;
-				//Manager.say("Collision normal is: " + tempVect);
+		Vector3 tempVect;
+		if(isGrounded == false){
+			for(int i = 0; i < floor.contacts.Length; i++){
+				tempVect = floor.contacts[i].normal;
+				if( tempVect.y > floorInclineThreshold){
+					isGrounded = true;
+					totalJumpsMade = 0;
+					return;
+					//Manager.say("Collision normal is: " + tempVect);
+				}
 			}
 		}
 	}
