@@ -46,7 +46,7 @@ public class GameMaster : MonoBehaviour {
 
 	}
 
-	private string magicWinButton = "w";
+	private string magicWinButton = "\\";
 	public GAME_VALUES _M;
 	private int sizeX = 150;
 	private int sizeY = 150;
@@ -70,7 +70,7 @@ public class GameMaster : MonoBehaviour {
 			Application.Quit();
 
 		}
-		if(Input.GetKeyDown("\\")){
+		if(Input.GetKeyDown(magicWinButton)){
 			Manager.say("You pressed the magic win button!", "eliot");
 			GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
 			for(int i = 0; i < allPlayers.Length-1; i++){
