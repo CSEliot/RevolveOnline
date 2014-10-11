@@ -27,6 +27,8 @@ public class FirstPersonController : MonoBehaviour {
 	private float totalJumpsMade;
 	private float floorInclineThreshold = 0.3f;
 
+	private bool runningToggle = false;
+
 	//ACTION STRINGS
 	//==================================================================
 	private string Haim_str = "_Look Rotation";
@@ -75,13 +77,10 @@ public class FirstPersonController : MonoBehaviour {
 				
 		//Movement
 		//Running!!
-		if(GM._M.runningAllowed && Input.GetButtonDown(Dash_str)){
-			oldMoveSpeed = GM._M.runningSpeed;
-			Manager.say("RUNNING IS BEING ATTEMPTED!", "eliot");
-		}
-		else if(Input.GetButtonUp(Dash_str)){
-			oldMoveSpeed = GM._M.movementSpeed;
-		}
+		if (GM._M.runningAllowed && Input.GetButtonDown (Dash_str)) {
+			runningToggle = !runningToggle;
+		 }
+		oldMoveSpeed = runningToggle? GM._M.runningSpeed :  GM._M.movementSpeed;
 		
 		
 		//Jumping!!
