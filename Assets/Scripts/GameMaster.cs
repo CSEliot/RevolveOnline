@@ -24,6 +24,7 @@ public class GameMaster : MonoBehaviour {
 		public bool invertControls;
 		public bool invertMouseY;
 		public bool noStrafe;
+		
 
 		//###################################
 		//ENVIRONMENT VARIABLES
@@ -38,8 +39,10 @@ public class GameMaster : MonoBehaviour {
 		//###################################
 		//GUNS/WEAPONS-----------------------
 		//basic gun mods
+		public float fireInterval_Basic;
 		public float bulletSpeed_Basic;
 		public float gunWeight_Basic;
+		public float bulletLife_Basic;
 
 
 		//Characters-------------------------

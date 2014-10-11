@@ -10,6 +10,7 @@ public class Bullet_Basic : MonoBehaviour {
 	private Ray	whatever;
 	private RaycastHit anyVariableName;
 
+	private GameMaster GM;
 
 	private Vector3 speed = Vector3.zero;
 	private string owner;
@@ -17,11 +18,12 @@ public class Bullet_Basic : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		timeBorn = Time.time;
+		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time - timeBorn > 4){
+		if(Time.time - timeBorn > GM._M.bulletLife_Basic){
 			Destroy(this.gameObject);	
 		}
 
