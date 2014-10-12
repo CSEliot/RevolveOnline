@@ -1,0 +1,140 @@
+fileFormatVersion: 2
+guid: 337d92a3ad0b74d44998c6343cbb12af
+labels:
+- Character
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: ArmPivotL
+    100002: ArmPivotR
+    100004: //RootNode
+    100006: Body
+    100008: Bone003
+    100010: Bone006
+    100012: BonearmL
+    100014: BoneArmR
+    100016: BoneShoulderL
+    100018: BoneShoulderR
+    100020: HandL
+    100022: HandR
+    100024: Head
+    100026: ShoulderL
+    100028: ShoulderR
+    100030: Visor
+    100032: WheelCap
+    400000: ArmPivotL
+    400002: ArmPivotR
+    400004: //RootNode
+    400006: Body
+    400008: Bone003
+    400010: Bone006
+    400012: BonearmL
+    400014: BoneArmR
+    400016: BoneShoulderL
+    400018: BoneShoulderR
+    400020: HandL
+    400022: HandR
+    400024: Head
+    400026: ShoulderL
+    400028: ShoulderR
+    400030: Visor
+    400032: WheelCap
+    2300000: ArmPivotL
+    2300002: ArmPivotR
+    2300004: //RootNode
+    2300006: Body
+    2300008: HandL
+    2300010: HandR
+    2300012: Head
+    2300014: ShoulderL
+    2300016: ShoulderR
+    2300018: Visor
+    2300020: WheelCap
+    3300000: ArmPivotL
+    3300002: ArmPivotR
+    3300004: //RootNode
+    3300006: Body
+    3300008: HandL
+    3300010: HandR
+    3300012: Head
+    3300014: ShoulderL
+    3300016: ShoulderR
+    3300018: Visor
+    3300020: WheelCap
+    4300000: Wheel
+    4300002: WheelCap
+    4300004: Body
+    4300006: Head
+    4300008: Visor
+    4300010: HandR
+    4300012: ShoulderR
+    4300014: ArmPivotR
+    4300016: HandL
+    4300018: ShoulderL
+    4300020: ArmPivotL
+    6400000: ArmPivotL
+    6400002: ArmPivotR
+    6400004: //RootNode
+    6400006: Body
+    6400008: HandL
+    6400010: HandR
+    6400012: Head
+    6400014: ShoulderL
+    6400016: ShoulderR
+    6400018: Visor
+    6400020: WheelCap
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .0255999994
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: WheelCap
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
