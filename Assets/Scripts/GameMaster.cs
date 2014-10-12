@@ -47,6 +47,9 @@ public class GameMaster : MonoBehaviour {
 
 		//Characters-------------------------
         public bool robots;
+
+        //Maps-------------------------------
+        public bool ColumnArena;
 	}
     private bool disabledChars;
 

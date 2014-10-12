@@ -13,7 +13,7 @@ public class ModGUI : MonoBehaviour {
 
 	public bool changed = false;
 
-	public int MAX_CHANGES = 4;
+	public int MAX_CHANGES;
 
 	void Start()
 	{
@@ -129,7 +129,14 @@ public class ModGUI : MonoBehaviour {
 				if(GUILayout.Button("Confirm"))
 				{
 					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().Save_Values();
-					Application.LoadLevel(Application.loadedLevel);
+                    if (GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M.ColumnArena)
+                    {
+    					Application.LoadLevel(2);
+                    }
+                    else
+                    {
+                        Application.LoadLevel(1); 
+                    }
 				}
 				if(GUILayout.Button("Revert"))
 				{
