@@ -28,6 +28,7 @@ public class FirstPersonController : MonoBehaviour {
 	private float floorInclineThreshold = 0.3f;
 
 	private bool runningToggle = false;
+    private bool canCheckForJump;
 
 	//ACTION STRINGS
 	//==================================================================
@@ -61,6 +62,7 @@ public class FirstPersonController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+        canCheckForJump = true;
         newRotationAngle = new Vector3();
         startingCameraRotation = transform.GetChild(0).transform.localRotation.eulerAngles;
         totalJumpsMade = 0;
@@ -102,17 +104,19 @@ public class FirstPersonController : MonoBehaviour {
 		
 		
 		//Jumping!!
-
-        if (GM._M.jumpingAllowed && totalJumpsMade <= totalJumpsAllowed-2 && Input.GetButtonDown(Jump_str))
+        if (GM._M.jumpingAllowed && totalJumpsMade < totalJumpsAllowed  && Input.GetButtonDown(Jump_str))
         {
             totalJumpsMade += 1;
             isGrounded = false;
+            canCheckForJump = false;
             Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, CalculateJumpVerticalSpeed(), rigidbody.velocity.z);
+
+            Invoke("AllowJumpCheck", 2);
         }
 		if(totalJumpsMade==0.0f){
 
-            //Gram being a massive dick. DONT EVER ENABLE THIS. IM WARNING YOU
+            //Gram being a massive jerk. DONT EVER ENABLE THIS. IM WARNING YOU
 			Vector3 targetVelocity;
 			if(!GM._M.invertControls)
 				targetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
@@ -196,10 +200,18 @@ public class FirstPersonController : MonoBehaviour {
         return Fire_str;
     }
 
+    // piece of delays OnCollisionStay's ground check so we can't jump for 2 seconds after
+    public void AllowJumpCheck()
+    {
+        //Manager.say("CAN CJECK JUMP", "eliot");
+        canCheckForJump = true;
+    }
+
 	void OnCollisionStay(Collision floor){
 
 		Vector3 tempVect;
-		if(isGrounded == false){
+        // we want to prevent isGrounded from being true and totalJumpsMade = 0 until 2 seconds later
+		if(isGrounded == false && canCheckForJump){
 			for(int i = 0; i < floor.contacts.Length; i++){
 				tempVect = floor.contacts[i].normal;
 				if( tempVect.y > floorInclineThreshold){
