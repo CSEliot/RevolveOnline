@@ -46,8 +46,9 @@ public class GameMaster : MonoBehaviour {
 
 
 		//Characters-------------------------
-
+        public bool robots;
 	}
+    private bool disabledChars;
 
 	private string magicWinButton = "\\";
 	public GAME_VALUES _M;
@@ -56,6 +57,7 @@ public class GameMaster : MonoBehaviour {
 	private bool gameOver = false;
 
 	void Start(){
+        disabledChars = false;
 		if(Application.isEditor)Save_Values();
 		Screen.lockCursor = true;
 		Load_Values();
@@ -66,6 +68,39 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	void Update(){
+        if (!disabledChars)
+        {
+            GameObject[] tempList = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in tempList)
+            {
+                //if robots are enabled
+                if (_M.robots)
+                {
+                    //if it is indeed a robot
+                    if (player.transform.GetChild(0).name == "UpperTorse+Camera")
+                    {
+                        player.SetActive(true);
+                    }
+                    else
+                    {
+                        player.SetActive(false);
+                    }
+                }
+                else
+                {
+                    //if it is indeed a robot
+                    if (player.transform.GetChild(0).name == "UpperTorse+Camera")
+                    {
+                        player.SetActive(false);
+                    }
+                    else
+                    {
+                        player.SetActive(true);
+                    }
+                }
+            }
+            disabledChars = true;
+        }
 		if(Input.GetKeyDown("q") || Input.GetKeyDown("escape"))
 		{
 			Save_Values();
