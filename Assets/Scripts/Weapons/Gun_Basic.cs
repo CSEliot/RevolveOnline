@@ -31,6 +31,7 @@ public class Gun_Basic : MonoBehaviour {
 			equipped = true;
 			setEquips(transform.gameObject);
 		}
+		//bulletType = bullet_prefab.GetComponent(bulletType);
 	}
 	
 	// Update is called once per frame
@@ -38,13 +39,12 @@ public class Gun_Basic : MonoBehaviour {
 		fireSpd -= Time.deltaTime*60;
 
 		Quaternion tempRot = gameObject.transform.rotation;
-
 		if(equipped && Input.GetButton(Fire_str) && fireSpd < 0){
 			Manager.say("I FIRED", "eliot");
 			GameObject tempBullet;
             //the gun has a bullet spawn component found via getchild(0).transform.position 
 			tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
-			tempBullet.GetComponent<Bullet_Basic>().setSpeedandOwner(Vector3.up * GM._M.bulletSpeed_Basic, owner);
+			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * GM._M.bulletSpeed_Basic, owner);
 			fireSpd = GM._M.fireInterval_Basic;
 		}
 	}
