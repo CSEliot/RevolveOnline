@@ -14,6 +14,7 @@ public class Bullet_Basic : MonoBehaviour {
 
 	private Vector3 speed = Vector3.zero;
 	private string owner;
+	private bool gotSpeed = false;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +34,20 @@ public class Bullet_Basic : MonoBehaviour {
 		if(Physics.Raycast(whatever, out anyVariableName, 0.3f)){
 			OnTriggerEnter(anyVariableName.transform);
 		}*/
+
+
+		//Keep trying to get the speed from Bullet.cs until it has it.
+		if(!gotSpeed){
+			gotSpeed = gameObject.transform.GetComponent<Bullet>().getGotSpeed();
+			//ONLY GET THE SPEED FROM BULLET COMPONENT >>IF<< BULLET COMPONENT HAS IT'S SPEED BEEN ASSIGNED
+			if(gotSpeed){
+				gameObject.transform.GetComponent<Bullet>();
+				speed = gameObject.transform.GetComponent<Bullet>().getSpeed();
+				owner = gameObject.transform.GetComponent<Bullet>().getOwner();
+				rigidbody.AddRelativeForce(speed);
+			}
+		}
+	
 	}
 
 	void OnCollisionEnter(Collision hitObject){
@@ -44,11 +59,5 @@ public class Bullet_Basic : MonoBehaviour {
 		else{
 			Destroy(this.gameObject);
 		}
-	}
-
-	public void setSpeedandOwner(Vector3 setSpeed, string setOwner){
-		speed = setSpeed;
-		owner = setOwner;
-		rigidbody.AddRelativeForce(speed);
-	}
+	}	
 }

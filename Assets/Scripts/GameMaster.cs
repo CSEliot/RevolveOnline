@@ -44,15 +44,14 @@ public class GameMaster : MonoBehaviour {
 		public float gunWeight_Basic;
 		public float bulletLife_Basic;
 
-
 		//Characters-------------------------
-        public bool robots;
+		public bool robots;
 
-        //Maps-------------------------------
-        public bool ColumnArena;
+		//Maps-------------------------------
+		public bool ColumnArena;
 	}
-    private bool disabledChars;
 
+	private bool disabledChars;
 	private string magicWinButton = "\\";
 	public GAME_VALUES _M;
 	private int sizeX = 150;

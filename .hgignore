@@ -10,7 +10,7 @@ syntax: glob
 *.bin
  
 syntax: regexp
-^Builds/.*
 ^Library/.*
 ^Temp/.*
 ^obj/.*
+^Builds/.*
