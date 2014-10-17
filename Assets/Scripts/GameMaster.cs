@@ -33,6 +33,7 @@ public class GameMaster : MonoBehaviour {
 		public bool jumpingAllowed;
 		public bool runningAllowed;
 		public bool miniMapEnabled;
+        public bool drunkMode;
 
 		//###################################
 		//MOD CONTENT ENABLED
@@ -60,7 +61,7 @@ public class GameMaster : MonoBehaviour {
 
 	void Start(){
         disabledChars = false;
-		if(Application.isEditor)Save_Values();
+		//if(Application.isEditor)Save_Values();
 		Screen.lockCursor = true;
 		Load_Values();
 		gameObject.camera.pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
