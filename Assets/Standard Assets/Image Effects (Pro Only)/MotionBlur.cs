@@ -11,19 +11,19 @@ using UnityEngine;
 
 public class MotionBlur : ImageEffectBase
 {
-	public float blurAmount = 0.8f;
-	public bool extraBlur = false;
+	private float blurAmount = 0.8f;
+	private bool extraBlur = true;
 	
 	private RenderTexture accumTexture;
-	
 	override protected void Start()
 	{
-		if(!SystemInfo.supportsRenderTextures)
+        if(!SystemInfo.supportsRenderTextures)
 		{
 			enabled = false;
 			return;
 		}
 		base.Start();
+        
 	}
 	
 	override protected void OnDisable()
@@ -35,6 +35,7 @@ public class MotionBlur : ImageEffectBase
 	// Called by camera to apply image effect
 	void OnRenderImage (RenderTexture source, RenderTexture destination)
 	{
+       
 		// Create the accumulation texture
 		if (accumTexture == null || accumTexture.width != source.width || accumTexture.height != source.height)
 		{

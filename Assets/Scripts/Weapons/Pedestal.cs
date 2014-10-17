@@ -16,7 +16,7 @@ public class Pedestal : MonoBehaviour {
 		currentRotation = ((currentRotation+rotationSpeed)*Time.deltaTime)%360;
 
 		//Manager.say("Current Rotation: " + currentRotation + "Actual Rotation: " + transform.rotation.y);
-
+        
 		//transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, currentRotation, this.transform.eulerAngles.z);
 		transform.Rotate(0, currentRotation, 0);
 		if(transform.childCount == 0){
