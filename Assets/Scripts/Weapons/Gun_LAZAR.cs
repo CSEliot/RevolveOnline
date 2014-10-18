@@ -18,11 +18,13 @@ public class Gun_LAZAR : MonoBehaviour {
 	private GameMaster GM;
 	
 	private string owner;
-	
+
+
+    private float intervalModifier;
 	// Use this for initialization
 	void Start () {
 		fireSpd = 0;
-		
+        intervalModifier = 59;
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
 		
 		if( !spawnedEquipped){
@@ -48,8 +50,8 @@ public class Gun_LAZAR : MonoBehaviour {
 			for(int i=0; i < 20; i++)
 			{
 				tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position+offset,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
-				tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*7)*(GM._M.bulletSpeed_Basic*8), owner);
-				fireSpd = GM._M.fireInterval_Basic;
+				tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*4 )*(GM._M.bulletSpeed_Basic*5), owner);
+				fireSpd = GM._M.fireInterval_Basic + intervalModifier;
 				offset += new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
 			}
 		}
