@@ -20,10 +20,13 @@ public class Healthbar : MonoBehaviour
 	private string lastDamageDealt;
 	private const float sizeX_Max = 0.1f;
 	
+	private KillStreak kills;	
+	public Transform parentObject;
+
 	void Start()
 	{		
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
-
+		kills = GameObject.Find("Game Master").GetComponent<KillStreak> ();
 		//initialize variables
 		sizeX = transform.GetChild(0).localScale.x; //referes to the Green child plane.
 		sizeY = transform.GetChild(0).localScale.y;
@@ -78,6 +81,8 @@ public class Healthbar : MonoBehaviour
 	{
 		if (currHealth <= 0.001)
 		{
+			kills.addKill(lastDamageDealt);
+			//kills.resetKill();
 			return true;
 		}
 		else

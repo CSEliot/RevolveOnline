@@ -59,8 +59,12 @@ public class GameMaster : MonoBehaviour {
 	private int sizeY = 150;
 	private bool gameOver = false;
 
+	private KillStreak kills;
+
 	void Start(){
-        disabledChars = false;
+		kills = transform.GetComponent<KillStreak>();
+
+		disabledChars = false;
 		//if(Application.isEditor)Save_Values();
 		Screen.lockCursor = true;
 		Load_Values();
@@ -122,6 +126,19 @@ public class GameMaster : MonoBehaviour {
 		        gameOver = true;
 				Screen.lockCursor = false;
 		}   
+
+		if (kills.getPlayer1Kills() > 2) {
+			Manager.say ("Player1 has killStreak", "jed");
+		}
+		if (kills.getPlayer2Kills() >2) {
+			Manager.say ("Player2 has killStreak", "jed");
+		}
+		if (kills.getPlayer3Kills() > 2) {
+			Manager.say ("Player3 has killStreak", "jed");
+		}
+		if (kills.getPlayer4Kills() > 1) {
+			Manager.say ("Player4 has killStreak", "jed");
+		}
 	}
 
 
