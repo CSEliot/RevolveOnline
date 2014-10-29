@@ -82,7 +82,7 @@ public class Healthbar : MonoBehaviour
 		if (currHealth <= 0.001)
 		{
 			kills.addKill(lastDamageDealt);
-			//kills.resetKill();
+			kills.resetKill(parentObject.name);
 			return true;
 		}
 		else
