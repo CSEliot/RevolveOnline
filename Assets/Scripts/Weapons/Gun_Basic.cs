@@ -14,10 +14,11 @@ public class Gun_Basic : MonoBehaviour {
 	private float fireSpd;
 
 	public GameObject bullet_prefab;
+    public GameObject Owner;
+
 
 	private GameMaster GM;
 
-	private string owner;
 
 	// Use this for initialization
 	void Start () {
@@ -44,7 +45,7 @@ public class Gun_Basic : MonoBehaviour {
 			GameObject tempBullet;
             //the gun has a bullet spawn component found via getchild(0).transform.position 
 			tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
-			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*5)*(GM._M.bulletSpeed_Basic*5), owner);
+			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*5)*(GM._M.bulletSpeed_Basic*5), Owner.name);
 			fireSpd = GM._M.fireInterval_Basic;
 		}
 	}
@@ -59,7 +60,6 @@ public class Gun_Basic : MonoBehaviour {
             equipped = true;
             //transform.localScale.Set(startScale.x, startScale.y, startScale.z);
             Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
-            owner = transform.parent.parent.name;
 		}
 	}
 
@@ -72,7 +72,7 @@ public class Gun_Basic : MonoBehaviour {
 			equipped = true;
 			//transform.localScale.Set(startScale.x, startScale.y, startScale.z);
             Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
-			owner = transform.parent.parent.name;
+            Owner = player.gameObject;
 		}
 	}
 }
