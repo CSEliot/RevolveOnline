@@ -81,9 +81,11 @@ public class Healthbar : MonoBehaviour
 	{
 		if (currHealth <= 0.001)
 		{
+            Manager.say("Before add kill attempt", "always");
 			kills.addKill(lastDamageDealt);
 			kills.resetKill(parentObject.name);
-			return true;
+            Manager.say("After add kill attempt", "always");
+            return true;
 		}
 		else
 		{

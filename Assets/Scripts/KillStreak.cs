@@ -15,38 +15,45 @@ public class KillStreak : MonoBehaviour {
 		if (killer == "Player 1") {
 			p1Kills ++;
 		}
-
-		if (killer == "Player 2") {
+		else if (killer == "Player 2") {
 			p2Kills ++;
 		}
 
-		if (killer == "Player 3") {
+		else if (killer == "Player 3") {
 			p3Kills ++;
 		}
 
-		if (killer == "Player 4") {
-			p4Kills ++;
-		}
+        else if (killer == "Player 4")
+        {
+            p4Kills++;
+        }
+        else
+        {
+            Manager.say("AddKill function got bad name: " + killer, "always");
+        }
 	}
 
 
 	public void resetKill(string deceased) {
-		
+        Manager.say("The player who died is: " + deceased, "eliot");
 		if (deceased == "Player 1") {
 			p1Kills = 0;
 		}
-		
-		if (deceased == "Player 2") {
-			p2Kills = 0;
-		}
-		
-		if (deceased == "Player 3") {
+        else if (deceased == "Player 2")
+        {
+            p2Kills = 0;
+        }
+		else if (deceased == "Player 3") {
 			p3Kills = 0;
 		}
-		
-		if (deceased == "Player 4") {
-			p4Kills = 0;
-		}
+        else if (deceased == "Player 4")
+        {
+            p4Kills = 0;
+        }
+        else
+        {
+            Manager.say("ResetKill got invalid dead name", "always");
+        }
 	}
 
 
@@ -60,7 +67,12 @@ public class KillStreak : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        Manager.say("Total kills so far is: " + p4Kills, "eliot");
+        if (p4Kills > 1)
+        {
+            Manager.say("GOT MILION KILLS DO THING", "eliot");
+            GameObject.Find("Player 4").GetComponent<FirstPersonController>().increaseSpeed(1090);
+        }
 	}
 
 	public int getPlayer1Kills(){

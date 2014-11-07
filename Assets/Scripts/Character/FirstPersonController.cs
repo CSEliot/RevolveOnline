@@ -22,7 +22,7 @@ public class FirstPersonController : MonoBehaviour {
 	private Ray	ray;
 	private RaycastHit rayHitDown;
 	private bool isGrounded = true;
-	private float oldMoveSpeed;
+	private float moveSpeed;
 	private float totalJumpsAllowed;
 	private float totalJumpsMade;
 	private float floorInclineThreshold = 0.3f;
@@ -49,6 +49,8 @@ public class FirstPersonController : MonoBehaviour {
     public float jumpHeightModifier;
     public float armorModifier;
 
+    private bool speedBuffKillStreakPowerUp = false;
+
     //For looking, we are assigning rotations, but we need original values
     //that aren't getting modified, so we can re-assign them.
     private Vector3 startingCameraRotation;
@@ -68,7 +70,7 @@ public class FirstPersonController : MonoBehaviour {
         totalJumpsMade = 0;
 		setControlStrings();
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
-		oldMoveSpeed = GM._M.movementSpeed;
+		moveSpeed = GM._M.movementSpeed;
 		rotLeftRight = 0.0f; 
 		totalJumpsAllowed = GM._M.jumpCount;
         transform.GetComponentInChildren<Healthbar>().modifyMaxHealth(GM, healthModifier, armorModifier);
@@ -100,8 +102,11 @@ public class FirstPersonController : MonoBehaviour {
 		if (GM._M.runningAllowed && Input.GetButtonDown (Dash_str)) {
 			runningToggle = !runningToggle;
 		 }
-		oldMoveSpeed = runningToggle? GM._M.runningSpeed+runSpeedModifier :  GM._M.movementSpeed+walkSpeedModifier;
-		
+		moveSpeed = runningToggle? GM._M.runningSpeed+runSpeedModifier :  GM._M.movementSpeed+walkSpeedModifier;
+        if (speedBuffKillStreakPowerUp)
+        {
+            moveSpeed *= 10;
+        }
 		
 		//Jumping!!
         if (GM._M.jumpingAllowed && totalJumpsMade < totalJumpsAllowed  && Input.GetButtonDown(Jump_str))
@@ -127,7 +132,7 @@ public class FirstPersonController : MonoBehaviour {
 				targetVelocity.x = 0;
 
 			targetVelocity = transform.TransformDirection(targetVelocity);
-			targetVelocity *= oldMoveSpeed;
+			targetVelocity *= moveSpeed;
 			// Apply a force that attempts to reach our target velocity
 			Vector3 velocity = rigidbody.velocity;
 			Vector3 velocityChange = (targetVelocity - velocity);
@@ -208,7 +213,6 @@ public class FirstPersonController : MonoBehaviour {
     }
 
 	void OnCollisionStay(Collision floor){
-
 		Vector3 tempVect;
         // we want to prevent isGrounded from being true and totalJumpsMade = 0 until 2 seconds later
 		if(isGrounded == false && canCheckForJump){
@@ -223,7 +227,14 @@ public class FirstPersonController : MonoBehaviour {
 			}
 		}
 	}
+
+    public void increaseSpeed(int speedInc)
+    {
+        speedBuffKillStreakPowerUp = true;
+    }
 }
+
+
 
 /*
 			if(isGrounded && Input.GetButtonDown(Jump_str)){
