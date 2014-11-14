@@ -39,6 +39,7 @@ public class FirstPersonController : MonoBehaviour {
 	private string  Fire_str = "_Fire";
 	private string Jump_str = "_Jump";
 	private string Dash_str = "_Run";
+	private string Zoom_str = "_Zoom";
 	//==================================================================
 
     //PERSONAL CHARACTER MODIFIERS
@@ -175,6 +176,7 @@ public class FirstPersonController : MonoBehaviour {
 			Vaim_str = "p1" + Vaim_str;
 			Jump_str = "p1" + Jump_str;
 			Dash_str = "p1" + Dash_str;
+			Zoom_str = "p1" + Zoom_str;
 		}else if(pName.Contains("2")){
 			Fire_str = "p2" + Fire_str;
 			FWmv_str = "p2" + FWmv_str;
@@ -183,6 +185,7 @@ public class FirstPersonController : MonoBehaviour {
 			Vaim_str = "p2" + Vaim_str;
 			Jump_str = "p2" + Jump_str;
 			Dash_str = "p2" + Dash_str;
+			Zoom_str = "p2" + Zoom_str;
 		}else if(pName.Contains("3")){
 			Fire_str = "p3" + Fire_str;
 			FWmv_str = "p3" + FWmv_str;
@@ -191,6 +194,7 @@ public class FirstPersonController : MonoBehaviour {
 			Vaim_str = "p3" + Vaim_str;
 			Jump_str = "p3" + Jump_str;
 			Dash_str = "p3" + Dash_str;
+			Zoom_str = "p3" + Zoom_str;
 		}else if(pName.Contains("4")){
 			Fire_str = "p4" + Fire_str;
 			FWmv_str = "p4" + FWmv_str;
@@ -199,6 +203,7 @@ public class FirstPersonController : MonoBehaviour {
 			Vaim_str = "p4" + Vaim_str;
 			Jump_str = "p4" + Jump_str;
 			Dash_str = "p4" + Dash_str;
+			Zoom_str = "p4" + Zoom_str;
 		}
 	}
     public string GetFire_Str(){
