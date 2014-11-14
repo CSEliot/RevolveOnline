@@ -97,7 +97,12 @@ public class FirstPersonController : MonoBehaviour {
         newRotationAngle.z = startingCameraRotation.z;
 		transform.GetChild(0).transform.localRotation = Quaternion.Euler(newRotationAngle);
 
-				
+
+		//Zooming
+		if (Input.GetButtonDown (Zoom_str)) {
+			GM._M.isZoomed = !GM._M.isZoomed;
+		}
+
 		//Movement
 		//Running!!
 		if (GM._M.runningAllowed && Input.GetButtonDown (Dash_str)) {
