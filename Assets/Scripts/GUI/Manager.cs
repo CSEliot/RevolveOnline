@@ -4,7 +4,7 @@ using System.Collections;
 public static class Manager {
 
 	public const bool DEBUG = true;
-	private const string myName = "eliot";
+	private const string myName = "conrad";
 	//change to your name above, then whenever you want to see your own errors, call the function with your name.
 
 
