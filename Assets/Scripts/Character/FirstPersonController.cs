@@ -12,6 +12,8 @@ public class FirstPersonController : MonoBehaviour {
 
 	private GameMaster GM;
 
+	private ZoomIn zoom;
+
 	private float rotUpDown;// = 0;
 	//private Vector3 speed;
 	private float verticalSpeed;
@@ -51,6 +53,7 @@ public class FirstPersonController : MonoBehaviour {
     public float armorModifier;
 
     private bool speedBuffKillStreakPowerUp = false;
+	public bool isZoomed = false;
 
     //For looking, we are assigning rotations, but we need original values
     //that aren't getting modified, so we can re-assign them.
@@ -75,6 +78,8 @@ public class FirstPersonController : MonoBehaviour {
 		rotLeftRight = 0.0f; 
 		totalJumpsAllowed = GM._M.jumpCount;
         transform.GetComponentInChildren<Healthbar>().modifyMaxHealth(GM, healthModifier, armorModifier);
+		zoom = transform.GetComponentInChildren<ZoomIn> ();
+		GM._M.canZoom = true;
 		//speed = Vector3.zero;
 	}
 
@@ -99,9 +104,16 @@ public class FirstPersonController : MonoBehaviour {
 
 
 		//Zooming
-		if (Input.GetButtonDown (Zoom_str)) {
-			GM._M.isZoomed = !GM._M.isZoomed;
+		if (GM._M.canZoom && Input.GetButton (Zoom_str)) {
+			zoom.dozoom ();
+		} 
+		else {
+			zoom.undozoom();
 		}
+
+		//if (GM._M.canZoom && Input.GetButtonUp (Zoom_str)) {
+		//	zoom.undozoom();
+		//}
 
 		//Movement
 		//Running!!

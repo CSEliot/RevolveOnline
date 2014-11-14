@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour {
 		public bool invertControls;
 		public bool invertMouseY;
 		public bool noStrafe;
-		public bool isZoomed;
+		public bool canZoom;
 		
 
 		//###################################
