@@ -42,17 +42,17 @@ public class Gun_LAZAR : MonoBehaviour {
 		
 		Quaternion tempRot = gameObject.transform.rotation;
 		if(equipped && Input.GetButton(Fire_str) && fireSpd < 0){
-			Manager.say("I FIRED", "eliot");
+			Manager.say("I FIRED", "Nate");
 			GameObject tempBullet;
 			//the gun has a bullet spawn component found via getchild(0).transform.position 
 
 			Vector3 offset = Vector3.zero;
-			for(int i=0; i < 20; i++)
+			for(int i=0; i < 5; i++)
 			{
 				tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position+offset,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
 				tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*4 )*(GM._M.bulletSpeed_Basic*5), owner);
 				fireSpd = GM._M.fireInterval_Basic + intervalModifier;
-				offset += new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
+				offset += new Vector3(Random.Range(-.10f, .10f), Random.Range(-.1f, .1f), 0);
 			}
 		}
 	}

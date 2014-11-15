@@ -62,6 +62,8 @@ public class Bullet_LAZAR : MonoBehaviour {
 			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.20f, owner);
 			Destroy(this.gameObject);
 		}
+		if (hitObject.transform.tag == "bullet") {
+				}
 		else{
 			Destroy(this.gameObject);
 		}
