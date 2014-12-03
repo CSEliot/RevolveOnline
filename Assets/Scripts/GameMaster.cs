@@ -51,6 +51,7 @@ public class GameMaster : MonoBehaviour {
 
 		//Maps-------------------------------
 		public bool ColumnArena;
+		public bool GridArena;
 	}
 
 	private bool disabledChars;
