@@ -131,12 +131,15 @@ public class ModGUI : MonoBehaviour {
 					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().Save_Values();
                     if (GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M.ColumnArena)
                     {
-    					Application.LoadLevel(2);
+    					Application.LoadLevel(3);
                     }
-                    else
+					else if(GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M.GridArena)
                     {
-                        Application.LoadLevel(1); 
+                        Application.LoadLevel(2); 
                     }
+					else{
+						Application.LoadLevel(1); 
+					}
 				}
 				if(GUILayout.Button("Revert"))
 				{
