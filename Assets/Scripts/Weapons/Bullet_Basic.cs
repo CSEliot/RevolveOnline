@@ -60,4 +60,15 @@ public class Bullet_Basic : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}	
+
+	void OnCollisionStay(Collision hitObject){
+		if(hitObject.transform.tag == "Player"){
+			Manager.say("This bullet has hit: " + hitObject.gameObject.name, "eliot");
+			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.20f, owner);
+			Destroy(this.gameObject);
+		}
+		else{
+			Destroy(this.gameObject);
+		}
+	}
 }
