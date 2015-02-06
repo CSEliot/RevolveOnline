@@ -24,6 +24,7 @@ public class GameMaster : MonoBehaviour {
 		public bool invertControls;
 		public bool invertMouseY;
 		public bool noStrafe;
+		public bool canZoom;
 		
 
 		//###################################
@@ -51,6 +52,7 @@ public class GameMaster : MonoBehaviour {
 
 		//Maps-------------------------------
 		public bool ColumnArena;
+		public bool GridArena;
 	}
 
 	private bool disabledChars;
