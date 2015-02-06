@@ -8,17 +8,17 @@ public class ZoomIn : MonoBehaviour {
 	private int smoothness = 5;
 	
 
-	private Camera camera;
+	private Camera myCamera;
 
 	void Start(){
-		camera = this.GetComponent<Camera> ();
+		myCamera = this.GetComponent<Camera> ();
 	}
 
 	public void dozoom() {
-		camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, zoom, Time.deltaTime * smoothness);
+		myCamera.fieldOfView = Mathf.Lerp(myCamera.fieldOfView, zoom, Time.deltaTime * smoothness);
 	}
 
 	public void undozoom() {
-		camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, defaultFoV, Time.deltaTime * smoothness);
+		myCamera.fieldOfView = Mathf.Lerp(myCamera.fieldOfView, defaultFoV, Time.deltaTime * smoothness);
 	}
 }
