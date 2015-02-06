@@ -9,6 +9,7 @@ syntax: glob
 *.unityproj
 *.bin
  
+Assets\Notes.txt.meta.orig.meta
 syntax: regexp
 ^Library/.*
 ^Temp/.*
