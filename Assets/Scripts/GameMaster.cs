@@ -24,7 +24,6 @@ public class GameMaster : MonoBehaviour {
 		public bool invertControls;
 		public bool invertMouseY;
 		public bool noStrafe;
-		public bool canZoom;
 		
 
 		//###################################
@@ -35,6 +34,7 @@ public class GameMaster : MonoBehaviour {
 		public bool runningAllowed;
 		public bool miniMapEnabled;
         public bool drunkMode;
+        public bool orthographic;
 
 		//###################################
 		//MOD CONTENT ENABLED
@@ -51,7 +51,6 @@ public class GameMaster : MonoBehaviour {
 
 		//Maps-------------------------------
 		public bool ColumnArena;
-		public bool GridArena;
 	}
 
 	private bool disabledChars;
@@ -60,20 +59,37 @@ public class GameMaster : MonoBehaviour {
 	private int sizeX = 150;
 	private int sizeY = 150;
 	private bool gameOver = false;
+    private Camera[] cameraList;
 
-	private KillStreak kills;
+	//private KillStreak kills;
 
 	void Start(){
-		kills = transform.GetComponent<KillStreak>();
+		//kills = transform.GetComponent<KillStreak>();
 
 		disabledChars = false;
-		if(Application.isEditor)Save_Values();
+		//if(Application.isEditor)Save_Values();
 		Screen.lockCursor = true;
 		Load_Values();
 		gameObject.camera.pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
 		if(_M.miniMapEnabled){
 			gameObject.camera.enabled = true;
 		}
+        cameraList = GameObject.FindObjectsOfType<Camera>();
+        if (_M.orthographic)
+        {
+            foreach (Camera x in cameraList)
+            {
+                x.orthographic = true;
+                x.orthographicSize = 2.35f;
+            }
+        }
+        else
+        {
+            foreach (Camera x in cameraList)
+            {
+                x.orthographic = false;
+            }
+        }
 	}
 
 	void Update(){
@@ -128,7 +144,7 @@ public class GameMaster : MonoBehaviour {
 		        gameOver = true;
 				Screen.lockCursor = false;
 		}   
-
+        /*
 		if (kills.getPlayer1Kills() > 2) {
 			Manager.say ("Player1 has killStreak", "jed");
 		}
@@ -140,7 +156,7 @@ public class GameMaster : MonoBehaviour {
 		}
 		if (kills.getPlayer4Kills() > 1) {
 			Manager.say ("Player4 has killStreak", "jed");
-		}
+		}*/
 	}
 
 
