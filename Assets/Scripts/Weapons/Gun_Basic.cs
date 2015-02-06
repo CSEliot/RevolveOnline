@@ -45,7 +45,7 @@ public class Gun_Basic : MonoBehaviour {
 			GameObject tempBullet;
             //the gun has a bullet spawn component found via getchild(0).transform.position 
 			tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
-			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*5)*(GM._M.bulletSpeed_Basic*5), Owner.name);
+			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic)*(GM._M.bulletSpeed_Basic), Owner.name);
 			fireSpd = GM._M.fireInterval_Basic;
 		}
 	}
