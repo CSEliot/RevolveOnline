@@ -5,6 +5,7 @@ public class LimitedPedestal : MonoBehaviour {
 
     private float currentRotation;
     public float rotationSpeed;
+    private float limitAmount = 0.45f;
 
     // Use this for initialization
     void Start()
@@ -16,7 +17,7 @@ public class LimitedPedestal : MonoBehaviour {
     void FixedUpdate()
     {
         
-        if (transform.rotation.x > 0.95 || transform.rotation.x > -0.95)
+        if (transform.rotation.x > limitAmount || transform.rotation.x > -limitAmount)
         {
             rotationSpeed *= -1;
         }
