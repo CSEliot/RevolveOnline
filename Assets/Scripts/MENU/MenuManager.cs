@@ -7,11 +7,16 @@ public class MenuManager : MonoBehaviour {
     public GameObject charSelect;
     public GameObject mapSelect;
     public GameObject load;
+    public GameObject lockMapCanvas;
 
     public GameObject[] charModels;
     public GameObject[] mapModels;
+    
+    public bool[] enabledMaps;
+    public bool[] enabledChars;
     //public GameObject[] selectedChars = new GameObject[4];
 
+    private GameMaster GM;
 
     public int currentChar = 0;
     public int currentMap = 0;
@@ -19,7 +24,14 @@ public class MenuManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
-        
+        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+
+        enabledMaps[0] = true; //basic map cannot be disabled
+        enabledMaps[1] = GM._M.GridArena;
+        enabledMaps[2] = GM._M.ColumnArena;
+
+        enabledChars[0] = true; //pill character cannot be disabled
+        enabledChars[1] = GM._M.robots;
 	}
 	
 	// Update is called once per frame
@@ -79,12 +91,16 @@ public class MenuManager : MonoBehaviour {
         if (mapSelect.activeSelf)
         {
             mapSelect.gameObject.SetActive(false);
+            mapModels[currentMap].SetActive(false);
         }
         else if (mapSelect.activeSelf == false)
         {
             mapSelect.gameObject.SetActive(true);
+            mapModels[currentMap].SetActive(true);
         }
     }
+
+
 
     public void LoadButton()
     {
@@ -105,13 +121,31 @@ public class MenuManager : MonoBehaviour {
             currentChar += direction;
             charModels[currentChar].SetActive(true);
             //selectedChars[0] = playerList[currentChar];
+
+            if (enabledChars[currentChar] == false)
+            {
+                lockMapCanvas.SetActive(true);
+            }
+            else
+            {
+                lockMapCanvas.SetActive(false);
+            }
+
+            //disable arrows when you can go left or right any more
         }
     }
 
-    //public void PlayGame()
-    //{
 
-    //}
+
+    public void PlayGame()
+    {
+        if (enabledMaps[currentMap])
+        {
+            Application.LoadLevel(currentMap + 1); 
+        }
+    }
+
+
 
     //Selects the next or previous map as the map to start the game with
     public void changeMap(int direction)
@@ -123,8 +157,18 @@ public class MenuManager : MonoBehaviour {
             currentMap += direction;
             mapModels[currentMap].SetActive(true);
             //selectedChars[0] = playerList[currentChar];
+
+            if (enabledMaps[currentMap] == false)
+            {
+                lockMapCanvas.SetActive(true);
+            }
+            else
+            {
+                lockMapCanvas.SetActive(false);
+            }
         }
 
+        
         //set start map to new map
     }
 }

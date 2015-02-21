@@ -69,7 +69,7 @@ public class GameMaster : MonoBehaviour {
 		//kills = transform.GetComponent<KillStreak>();
 
 		disabledChars = false;
-		//if(Application.isEditor)Save_Values();
+		if(Application.isEditor)Save_Values();
 		Screen.lockCursor = true;
 		Load_Values();
 		gameObject.camera.pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
