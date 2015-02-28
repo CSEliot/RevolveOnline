@@ -62,15 +62,20 @@ public class GameMaster : MonoBehaviour {
 	private int sizeY = 150;
 	private bool gameOver = false;
     private Camera[] cameraList;
-
+    public GameObject[] selectedCharacters = new GameObject[4];
+    public GameObject[] allPossibleCharacters = new GameObject[8];
+    private int currentScene;
 	//private KillStreak kills;
 
 	void Start(){
+        currentScene = Application.loadedLevel;
 		//kills = transform.GetComponent<KillStreak>();
+        DontDestroyOnLoad(this);
+
 
 		disabledChars = false;
 		if(Application.isEditor)Save_Values();
-		Screen.lockCursor = true;
+		
 		Load_Values();
 		gameObject.camera.pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
 		if(_M.miniMapEnabled){
@@ -94,38 +99,56 @@ public class GameMaster : MonoBehaviour {
         }
 	}
 
+    public void SpawnPlayers()
+    {
+        Screen.lockCursor = true;
+        GameObject[] spawnPoints = new GameObject[4];
+        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject temp = Instantiate(selectedCharacters[i], spawnPoints[i].transform.position, spawnPoints[i].transform.rotation) as GameObject;
+        }
+    }
+
 	void Update(){
+        if (currentScene != Application.loadedLevel && Application.loadedLevel > 0)
+        {
+            SpawnPlayers();
+            currentScene = Application.loadedLevel;
+        }
+
+
         if (!disabledChars)
         {
-            GameObject[] tempList = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject player in tempList)
-            {
-                //if robots are enabled
-                if (_M.robots)
-                {
-                    //if it is indeed a robot
-                    if (player.transform.GetChild(0).name == "UpperTorse+Camera")
-                    {
-                        player.SetActive(true);
-                    }
-                    else
-                    {
-                        player.SetActive(false);
-                    }
-                }
-                else
-                {
-                    //if it is indeed a robot
-                    if (player.transform.GetChild(0).name == "UpperTorse+Camera")
-                    {
-                        player.SetActive(false);
-                    }
-                    else
-                    {
-                        player.SetActive(true);
-                    }
-                }
-            }
+            //GameObject[] tempList = GameObject.FindGameObjectsWithTag("Player");
+            //for (int i = 0; i < tempList.Length; i++) //previously: foreach (GameObject player in tempList)
+            //{
+            //    //if robots are enabled
+            //    if (selectedCharacters[i] == 1) //previous condition: _M.robots
+            //    {
+            //        //if it is indeed a robot
+            //        if (tempList[i].transform.GetChild(0).name == "UpperTorse+Camera") //tempList[i] was previously player
+            //        {
+            //            tempList[i].SetActive(true);
+            //        }
+            //        else
+            //        {
+            //            tempList[i].SetActive(false);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        //if it is indeed a robot
+            //        if (tempList[i].transform.GetChild(0).name == "UpperTorse+Camera")
+            //        {
+            //            tempList[i].SetActive(false);
+            //        }
+            //        else
+            //        {
+            //            tempList[i].SetActive(true);
+            //        }
+            //    }
+            //}
             disabledChars = true;
         }
 		if(Input.GetKeyDown("q") || Input.GetKeyDown("escape"))
