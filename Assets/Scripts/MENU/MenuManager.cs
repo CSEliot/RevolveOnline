@@ -7,10 +7,12 @@ public class MenuManager : MonoBehaviour {
     public GameObject charSelect;
     public GameObject mapSelect;
     public GameObject load;
-    public GameObject lockMapCanvas;
+    public GameObject LockedCanvas;
+
 
     public GameObject[] charModels;
     public GameObject[] mapModels;
+    public GameObject[] characterObjects;
     
     public bool[] enabledMaps;
     public bool[] enabledChars;
@@ -23,9 +25,9 @@ public class MenuManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () 
-    {
+    {      
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
-
+        Screen.lockCursor = false;
         enabledMaps[0] = true; //basic map cannot be disabled
         enabledMaps[1] = GM._M.GridArena;
         enabledMaps[2] = GM._M.ColumnArena;
@@ -110,8 +112,13 @@ public class MenuManager : MonoBehaviour {
 
 
     //Selects the next or previous character as the character for that player to start the game with
-    public void changeChar(int direction)
+    public void changeChar(string twoInts)
     {
+        string temp = twoInts.Substring(0, 2);
+        int direction = int.Parse(temp);
+        temp = twoInts.Substring(2, 1);
+        int player = int.Parse(temp);
+
         GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
         
         //Enable disable the current character model and enable the new one
@@ -124,14 +131,18 @@ public class MenuManager : MonoBehaviour {
 
             if (enabledChars[currentChar] == false)
             {
-                lockMapCanvas.SetActive(true);
+                LockedCanvas.SetActive(true);
             }
             else
-            {
-                lockMapCanvas.SetActive(false);
+            {   //if player 2, add 1 to character selection
+                //Multiple 4*Selected character, such that character 1 = 0 and character 2 = 4 and character 3 = 8
+                // so that if player 3 selects the pill, that's: 4*x + y  where x is 0 for pill (character 0) and y is 2 for player 3 
+                // (P.1 = 0, P.2 = 1, etc.)
+                LockedCanvas.SetActive(false);
+                GM.selectedCharacters[player] = GM.allPossibleCharacters[currentChar*4+player];
             }
 
-            //disable arrows when you can go left or right any more
+            //disable arrows when you can't go left or right any more
         }
     }
 
@@ -160,15 +171,14 @@ public class MenuManager : MonoBehaviour {
 
             if (enabledMaps[currentMap] == false)
             {
-                lockMapCanvas.SetActive(true);
+                LockedCanvas.SetActive(true);
             }
             else
             {
-                lockMapCanvas.SetActive(false);
+                LockedCanvas.SetActive(false);
             }
         }
 
-        
-        //set start map to new map
+            //disable arrows
     }
 }
