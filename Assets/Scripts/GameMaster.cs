@@ -81,6 +81,12 @@ public class GameMaster : MonoBehaviour {
 		if(_M.miniMapEnabled){
 			gameObject.camera.enabled = true;
 		}
+
+        
+	}
+
+    public void SpawnPlayers()
+    {
         cameraList = GameObject.FindObjectsOfType<Camera>();
         if (_M.orthographic)
         {
@@ -97,10 +103,7 @@ public class GameMaster : MonoBehaviour {
                 x.orthographic = false;
             }
         }
-	}
 
-    public void SpawnPlayers()
-    {
         Screen.lockCursor = true;
         GameObject[] spawnPoints = new GameObject[4];
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
