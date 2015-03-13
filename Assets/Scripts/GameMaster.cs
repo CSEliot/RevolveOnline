@@ -85,25 +85,37 @@ public class GameMaster : MonoBehaviour {
         
 	}
 
-    public void SpawnPlayers()
+
+    public void SetOrthographic(bool orth)
     {
         cameraList = GameObject.FindObjectsOfType<Camera>();
-        if (_M.orthographic)
+        foreach (Camera x in cameraList)
         {
-            foreach (Camera x in cameraList)
-            {
-                x.orthographic = true;
-                x.orthographicSize = 2.35f;
-            }
+                x.orthographic = orth;
+                x.orthographicSize = 163.7f;
         }
-        else
-        {
-            foreach (Camera x in cameraList)
-            {
-                x.orthographic = false;
-            }
-        }
+        
+        //if (_M.orthographic)
+        //{
+        //    foreach (Camera x in cameraList)
+        //    {
+        //        x.orthographic = true;
+        //        x.orthographicSize = 2.35f;
+        //    }
+        //}
+        //else
+        //{
+        //    foreach (Camera x in cameraList)
+        //    {
+        //        x.orthographic = false;
+        //    }
+        //}
+    }
 
+
+    public void SpawnPlayers()
+    {
+        SetOrthographic(true);
         Screen.lockCursor = true;
         GameObject[] spawnPoints = new GameObject[4];
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
