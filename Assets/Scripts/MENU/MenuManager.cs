@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour {
     public GameObject[] lockedCanvases;
     public GameObject[] mapArrows;
     public GameObject[] charArrows;
+    public GameObject[] charConfirms;
     
     public bool[] enabledMaps;
     public bool[] enabledChars;
@@ -25,7 +26,16 @@ public class MenuManager : MonoBehaviour {
     public int[] currentChars = {0, 0, 0, 0};
     public int currentMap = 0;
     
+    //input stuff
+    public string currentMenu = "char";
+    string winner = "p1";
+    bool[] canSwitchChars = { true, true, true, true };
+    bool canSwitchMap = true;
+    string player = "";
+
+
     public const int NUM_CHARS = 2;
+    public const int NUM_MAPS = 3;
 
 
 
@@ -43,11 +53,85 @@ public class MenuManager : MonoBehaviour {
 
         enabledChars[0] = true; //pill character cannot be disabled
         enabledChars[1] = GM._M.robots;
+
+        currentMenu = "char";
 	}
 	
 	// Update is called once per frame
 	void Update () {
-    
+        if (currentMenu == "char") {
+            for (int i = 0; i < 4; i++) {
+                player = "p" + (i+1);
+                if (Input.GetAxis(player + "_Strafe") < -0.1) {
+                    if (canSwitchChars[i]) {
+                        changeChar("-1" + i);
+                        canSwitchChars[i] = false; 
+                    }
+                }
+                else if (Input.GetAxis(player + "_Strafe") > 0.1) {
+                    if (canSwitchChars[i]) {
+                        changeChar("+1" + i);
+                        canSwitchChars[i] = false; 
+                    }
+                }
+                else {
+                    canSwitchChars[i] = true;
+                }
+                
+                if (Input.GetButtonDown(player + "_Jump")) {
+                    ConfirmChar(i);
+                }
+
+                
+            }
+            if (Input.GetButtonDown("Start")) {
+                bool allConfirmed = true;
+                foreach (GameObject button in charConfirms) {
+                    if (button.activeSelf == true) {
+                        allConfirmed = false;
+                    }
+                }
+                if (allConfirmed) {
+                    SwitchCharacterSelection();
+                    SwitchMapSelection(); 
+                }
+            }
+            else if (Input.GetButtonDown("Cancel")) {
+                SwitchCharacterSelection();
+                SwitchMainMenu();
+            }
+        }
+        else if (currentMenu == "map") {
+            if (Input.GetAxis(winner + "_Strafe") < -0.1) {
+                if (canSwitchMap) {
+                    changeMap(-1);
+                    canSwitchMap = false; 
+                }
+            }
+            else if (Input.GetAxis(winner + "_Strafe") > 0.1) {
+                if (canSwitchMap) {
+                    changeMap(1);
+                    canSwitchMap = false; 
+                }
+            }
+            else {
+                canSwitchMap = true;
+            }
+
+            if (Input.GetButtonDown("Start")) {
+                PlayGame();
+            }
+            else if (Input.GetButtonDown("Cancel")) {
+                SwitchMapSelection();
+                SwitchCharacterSelection();
+            }
+        }
+        else if (currentMenu == "main") {
+            if (Input.GetButtonDown("Start")) {
+                SwitchMainMenu();
+                SwitchCharacterSelection();
+            }
+        }
 	}
 
 
@@ -60,7 +144,8 @@ public class MenuManager : MonoBehaviour {
     //switches to or from the main menu
     public void SwitchMainMenu()
     {
-        mainMenu.SetActive(!mainMenu.activeSelf);   
+        mainMenu.SetActive(!mainMenu.activeSelf);
+        currentMenu = "main";
     }
 
 
@@ -77,6 +162,7 @@ public class MenuManager : MonoBehaviour {
             lockedCanvases[i].SetActive(!enabledChars[currentChars[i]] && charSelect.activeSelf);
         }
 
+        currentMenu = "char";
         GM.SetOrthographic(charSelect.activeSelf); //Enable or disable orthographic camera
     }
 
@@ -89,6 +175,7 @@ public class MenuManager : MonoBehaviour {
         LockedCanvas.SetActive(!enabledMaps[currentMap] && mapSelect.activeSelf);   //Show or hide the "locked" message
 
         GM.SetOrthographic(!mapSelect.activeSelf);                                  //Make the camera perspective if in the map menu and orthographic if leaving
+        currentMenu = "map";
     }
 
 
@@ -109,43 +196,47 @@ public class MenuManager : MonoBehaviour {
         temp = twoInts.Substring(2, 1);
         int player = int.Parse(temp);
 
-        GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
-        
-        //Disable the current character model and enable the new one
-        charModels[currentChars[player] * 4 + player].SetActive(false);
-        currentChars[player] += direction;
-        charModels[currentChars[player] * 4 + player].SetActive(true);
+        if (currentChars[player] + direction >= 0 && currentChars[player] + direction < NUM_CHARS) {
+            charConfirms[player].SetActive(true);
+            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
 
-        if (enabledChars[currentChars[player]])
-        {
+            //Disable the current character model and enable the new one
+            charModels[currentChars[player] * 4 + player].SetActive(false);
+            currentChars[player] += direction;
+            charModels[currentChars[player] * 4 + player].SetActive(true);
+
+            lockedCanvases[player].SetActive(!enabledChars[currentChars[player]]);
+
+            charArrows[player].SetActive(currentChars[player] > 0);
+            charArrows[player + charArrows.Length / NUM_CHARS].SetActive(currentChars[player] < charArrows.Length / 5); 
+        }
+    }
+
+    public void ConfirmChar(int player) {
+        if (enabledChars[currentChars[player]]) {
             //if player 2, add 1 to character selection
             //Multiple 4*Selected character, such that character 1 = 0 and character 2 = 4 and character 3 = 8
             // so that if player 3 selects the pill, that's: 4*x + y  where x is 0 for pill (character 0) and y is 2 for player 3 
             // (P.1 = 0, P.2 = 1, etc.)
-            lockedCanvases[player].SetActive(false);
             GM.selectedCharacters[player] = GM.allPossibleCharacters[currentChars[player] * 4 + player];
+            charConfirms[player].SetActive(false);
         }
-
-        lockedCanvases[player].SetActive(!enabledChars[currentChars[player]]);
-
-        charArrows[player].SetActive(currentChars[player] > 0);
-        charArrows[player + charArrows.Length / NUM_CHARS].SetActive(currentChars[player] < charArrows.Length / 5);
     }
-
-
     //Selects the next or previous map as the map to start the game with
     public void changeMap(int direction)
     {
-        //disable current map model and enable next
-        mapModels[currentMap].SetActive(false);
-        currentMap += direction;
-        mapModels[currentMap].SetActive(true);
+        if (currentMap + direction >= 0 && currentMap + direction < NUM_MAPS) {
+            //disable current map model and enable next
+            mapModels[currentMap].SetActive(false);
+            currentMap += direction;
+            mapModels[currentMap].SetActive(true);
 
-        LockedCanvas.SetActive(!enabledMaps[currentMap]);
+            LockedCanvas.SetActive(!enabledMaps[currentMap]);
 
-        ////Enable or disable arrows
-        mapArrows[0].SetActive(currentMap > 0);
-        mapArrows[1].SetActive(currentMap < mapArrows.Length);
+            ////Enable or disable arrows
+            mapArrows[0].SetActive(currentMap > 0);
+            mapArrows[1].SetActive(currentMap < mapArrows.Length); 
+        }
     }
 
 
