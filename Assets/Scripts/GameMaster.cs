@@ -77,9 +77,9 @@ public class GameMaster : MonoBehaviour {
 		if(Application.isEditor)Save_Values();
 		
 		Load_Values();
-		gameObject.camera.pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
+		gameObject.GetComponent<Camera>().pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
 		if(_M.miniMapEnabled){
-			gameObject.camera.enabled = true;
+			gameObject.GetComponent<Camera>().enabled = true;
 		}
 
         
