@@ -7,7 +7,9 @@ public class MenuManager : MonoBehaviour {
     public GameObject charSelect;
     public GameObject mapSelect;
     public GameObject load;
-    public GameObject LockedCanvas;
+    public GameObject lockedCanvas;
+    public GameObject onlinePanel;
+    public GameObject offlinePanel;
 
 
     public GameObject[] charModels;
@@ -32,7 +34,7 @@ public class MenuManager : MonoBehaviour {
     bool[] canSwitchChars = { true, true, true, true };
     bool canSwitchMap = true;
     string player = "";
-
+    bool isOnline = true;
 
     public const int NUM_CHARS = 2;
     public const int NUM_MAPS = 3;
@@ -59,6 +61,7 @@ public class MenuManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //controller inputs
         if (currentMenu == "char") {
             for (int i = 0; i < 4; i++) {
                 player = "p" + (i+1);
@@ -155,15 +158,25 @@ public class MenuManager : MonoBehaviour {
         //Enable or disable the character selection panel
         charSelect.SetActive(!charSelect.activeSelf);
 
-        //Enable or disable the rotating characters and the "locked" messages
-        for (int i = 0; i < 4; i++)
-        {
-            charModels[currentChars[i]].SetActive(!charModels[currentChars[i]].activeSelf);
-            lockedCanvases[i].SetActive(!enabledChars[currentChars[i]] && charSelect.activeSelf);
+        if (isOnline) {
+            charModels[currentChars[0] + 4].SetActive(!charModels[currentChars[0] + 4].activeSelf);
+            lockedCanvas.SetActive(!enabledChars[currentChars[0]] && charSelect.activeSelf);
         }
-
+        else {
+            //Enable or disable the rotating characters and the "locked" messages
+            for (int i = 0; i < 4; i++) {
+                charModels[currentChars[i]].SetActive(!charModels[currentChars[i]].activeSelf);
+                lockedCanvases[i].SetActive(!enabledChars[currentChars[i]] && charSelect.activeSelf);
+            }
+        }
         currentMenu = "char";
         GM.SetOrthographic(charSelect.activeSelf); //Enable or disable orthographic camera
+    }
+
+    public void SetOnlineOffline(bool isOn) {
+        isOnline = isOn;
+        onlinePanel.SetActive(isOnline);
+        offlinePanel.SetActive(!isOnline);
     }
 
 
@@ -172,7 +185,7 @@ public class MenuManager : MonoBehaviour {
     {
         mapSelect.SetActive(!mapSelect.activeSelf);                                 //Show or hide the map selection menu
         mapModels[currentMap].SetActive(mapSelect.activeSelf);                      //Show or hide the current map
-        LockedCanvas.SetActive(!enabledMaps[currentMap] && mapSelect.activeSelf);   //Show or hide the "locked" message
+        lockedCanvas.SetActive(!enabledMaps[currentMap] && mapSelect.activeSelf);   //Show or hide the "locked" message
 
         GM.SetOrthographic(!mapSelect.activeSelf);                                  //Make the camera perspective if in the map menu and orthographic if leaving
         currentMenu = "map";
@@ -231,7 +244,7 @@ public class MenuManager : MonoBehaviour {
             currentMap += direction;
             mapModels[currentMap].SetActive(true);
 
-            LockedCanvas.SetActive(!enabledMaps[currentMap]);
+            lockedCanvas.SetActive(!enabledMaps[currentMap]);
 
             ////Enable or disable arrows
             mapArrows[0].SetActive(currentMap > 0);
