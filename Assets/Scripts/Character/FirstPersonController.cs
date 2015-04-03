@@ -61,8 +61,8 @@ public class FirstPersonController : MonoBehaviour {
     private Vector3 newRotationAngle;
 
 	void Awake () {
-		rigidbody.freezeRotation = true;
-		rigidbody.useGravity = false;
+		GetComponent<Rigidbody>().freezeRotation = true;
+		GetComponent<Rigidbody>().useGravity = false;
 	}
 	
 	
@@ -133,7 +133,7 @@ public class FirstPersonController : MonoBehaviour {
             isGrounded = false;
             canCheckForJump = false;
             Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, CalculateJumpVerticalSpeed(), rigidbody.velocity.z);
+            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, CalculateJumpVerticalSpeed(), GetComponent<Rigidbody>().velocity.z);
 
             Invoke("AllowJumpCheck", 2);
         }
@@ -152,21 +152,21 @@ public class FirstPersonController : MonoBehaviour {
 			targetVelocity = transform.TransformDirection(targetVelocity);
 			targetVelocity *= moveSpeed;
 			// Apply a force that attempts to reach our target velocity
-			Vector3 velocity = rigidbody.velocity;
+			Vector3 velocity = GetComponent<Rigidbody>().velocity;
 			Vector3 velocityChange = (targetVelocity - velocity);
 
 			velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
 			velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
 			velocityChange.y = 0;
 
-            rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+            GetComponent<Rigidbody>().AddForce(velocityChange, ForceMode.VelocityChange);
 
 			// Jump
 			//Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
         }
 		
 
-		rigidbody.AddForce(new Vector3 (0, -GM._M.gravity * rigidbody.mass, 0));
+		GetComponent<Rigidbody>().AddForce(new Vector3 (0, -GM._M.gravity * GetComponent<Rigidbody>().mass, 0));
 		// We apply gravity manually for more tuning control
 
 
