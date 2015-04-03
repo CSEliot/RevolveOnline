@@ -44,7 +44,7 @@ public class Bullet_LAZAR : MonoBehaviour {
 				gameObject.transform.GetComponent<Bullet>();
 				speed = gameObject.transform.GetComponent<Bullet>().getSpeed();
 				owner = gameObject.transform.GetComponent<Bullet>().getOwner();
-				rigidbody.AddRelativeForce(speed);
+				GetComponent<Rigidbody>().AddRelativeForce(speed);
 			}
 		}
 	
