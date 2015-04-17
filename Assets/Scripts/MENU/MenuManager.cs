@@ -25,7 +25,7 @@ public class MenuManager : MonoBehaviour {
 
     private GameMaster GM;
 
-    public int[] currentChars = {0, 0, 0, 0};
+    public int[] currentChars = {0, 0, 0, 0, 0};
     public int currentMap = 0;
     
     //input stuff
@@ -220,8 +220,10 @@ public class MenuManager : MonoBehaviour {
 
             lockedCanvases[player].SetActive(!enabledChars[currentChars[player]]);
 
+            //Enable or disable left arrow
             charArrows[player].SetActive(currentChars[player] > 0);
-            charArrows[player + charArrows.Length / NUM_CHARS].SetActive(currentChars[player] < charArrows.Length / 5); 
+            //Enable or disable right arrow
+            charArrows[player + charArrows.Length / (NUM_CHARS)].SetActive(currentChars[player] < charArrows.Length / 5 - 1); 
         }
     }
 
