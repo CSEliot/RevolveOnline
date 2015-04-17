@@ -55,6 +55,8 @@ public class FirstPersonController : MonoBehaviour {
     private bool speedBuffKillStreakPowerUp = false;
 	public bool isZoomed = false;
 
+	private Vector3 spawn;
+
     //For looking, we are assigning rotations, but we need original values
     //that aren't getting modified, so we can re-assign them.
     private Vector3 startingCameraRotation;
@@ -80,6 +82,7 @@ public class FirstPersonController : MonoBehaviour {
         transform.GetComponentInChildren<Healthbar>().modifyMaxHealth(GM, healthModifier, armorModifier);
 		zoom = transform.GetComponentInChildren<ZoomIn> ();
 		GM._M.canZoom = true;
+		spawn = transform.position;
 		//speed = Vector3.zero;
 	}
 
@@ -123,7 +126,7 @@ public class FirstPersonController : MonoBehaviour {
 		moveSpeed = runningToggle? GM._M.runningSpeed+runSpeedModifier :  GM._M.movementSpeed+walkSpeedModifier;
         if (speedBuffKillStreakPowerUp)
         {
-            moveSpeed *= 10;
+            moveSpeed *= 2;
         }
 		
 		//Jumping!!
@@ -254,6 +257,11 @@ public class FirstPersonController : MonoBehaviour {
     {
         speedBuffKillStreakPowerUp = true;
     }
+
+	public void respawn()
+	{
+		transform.position = spawn;
+	}
 }
 
 
