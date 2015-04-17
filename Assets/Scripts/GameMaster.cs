@@ -25,7 +25,7 @@ public class GameMaster : MonoBehaviour {
 		public bool invertMouseY;
 		public bool noStrafe;
 		public bool canZoom;
-		
+		public int playerLives;		
 
 		//###################################
 		//ENVIRONMENT VARIABLES
@@ -34,6 +34,7 @@ public class GameMaster : MonoBehaviour {
 		public bool jumpingAllowed;
 		public bool runningAllowed;
 		public bool miniMapEnabled;
+        public bool drunkMode;
         public bool drunkMode;
         public bool orthographic;
 
@@ -61,6 +62,9 @@ public class GameMaster : MonoBehaviour {
 	private int sizeX = 150;
 	private int sizeY = 150;
 	private bool gameOver = false;
+
+	private KillStreak kills;
+	private bool gameOver = false;
     private Camera[] cameraList;
     public GameObject[] selectedCharacters = new GameObject[4];
     public GameObject[] allPossibleCharacters = new GameObject[8];
@@ -68,17 +72,27 @@ public class GameMaster : MonoBehaviour {
 	//private KillStreak kills;
 
 	void Start(){
+<<<<<<< local
+		kills = transform.GetComponent<KillStreak>();
+=======
         currentScene = Application.loadedLevel;
 		//kills = transform.GetComponent<KillStreak>();
         DontDestroyOnLoad(this);
 
 
+>>>>>>> other
 		disabledChars = false;
 		if(Application.isEditor)Save_Values();
+		Screen.lockCursor = true;
 		
 		Load_Values();
 		gameObject.GetComponent<Camera>().pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
 		if(_M.miniMapEnabled){
+<<<<<<< local
+			gameObject.GetComponent<Camera>().enabled = true;
+		}
+	}
+=======
 			gameObject.GetComponent<Camera>().enabled = true;
 		}
 
@@ -124,6 +138,7 @@ public class GameMaster : MonoBehaviour {
             GameObject temp = Instantiate(selectedCharacters[i], spawnPoints[i].transform.position, spawnPoints[i].transform.rotation) as GameObject;
         }
     }
+>>>>>>> other
 
 	void Update(){
         if (currentScene != Application.loadedLevel && Application.loadedLevel > 0)
@@ -135,6 +150,35 @@ public class GameMaster : MonoBehaviour {
 
         if (!disabledChars)
         {
+            GameObject[] tempList = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in tempList)
+            {
+                //if robots are enabled
+                if (_M.robots)
+                {
+                    //if it is indeed a robot
+                    if (player.transform.GetChild(0).name == "UpperTorse+Camera")
+                    {
+                        player.SetActive(true);
+                    }
+                    else
+                    {
+                        player.SetActive(false);
+                    }
+                }
+                else
+                {
+                    //if it is indeed a robot
+                    if (player.transform.GetChild(0).name == "UpperTorse+Camera")
+                    {
+                        player.SetActive(false);
+                    }
+                    else
+                    {
+                        player.SetActive(true);
+                    }
+                }
+            }
             //GameObject[] tempList = GameObject.FindGameObjectsWithTag("Player");
             //for (int i = 0; i < tempList.Length; i++) //previously: foreach (GameObject player in tempList)
             //{
@@ -184,6 +228,7 @@ public class GameMaster : MonoBehaviour {
 		        gameOver = true;
 				Screen.lockCursor = false;
 		}   
+
         /*
 		if (kills.getPlayer1Kills() > 2) {
 			Manager.say ("Player1 has killStreak", "jed");
@@ -196,7 +241,7 @@ public class GameMaster : MonoBehaviour {
 		}
 		if (kills.getPlayer4Kills() > 1) {
 			Manager.say ("Player4 has killStreak", "jed");
-		}*/
+		}
 	}
 
 
