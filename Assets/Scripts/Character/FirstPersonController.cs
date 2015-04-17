@@ -55,14 +55,16 @@ public class FirstPersonController : MonoBehaviour {
     private bool speedBuffKillStreakPowerUp = false;
 	public bool isZoomed = false;
 
+	private Vector3 spawn;
+
     //For looking, we are assigning rotations, but we need original values
     //that aren't getting modified, so we can re-assign them.
     private Vector3 startingCameraRotation;
     private Vector3 newRotationAngle;
 
 	void Awake () {
-		rigidbody.freezeRotation = true;
-		rigidbody.useGravity = false;
+		GetComponent<Rigidbody>().freezeRotation = true;
+		GetComponent<Rigidbody>().useGravity = false;
 	}
 	
 	
@@ -80,6 +82,7 @@ public class FirstPersonController : MonoBehaviour {
         transform.GetComponentInChildren<Healthbar>().modifyMaxHealth(GM, healthModifier, armorModifier);
 		zoom = transform.GetComponentInChildren<ZoomIn> ();
 		GM._M.canZoom = true;
+		spawn = transform.position;
 		//speed = Vector3.zero;
 	}
 
@@ -123,7 +126,7 @@ public class FirstPersonController : MonoBehaviour {
 		moveSpeed = runningToggle? GM._M.runningSpeed+runSpeedModifier :  GM._M.movementSpeed+walkSpeedModifier;
         if (speedBuffKillStreakPowerUp)
         {
-            moveSpeed *= 10;
+            moveSpeed *= 2;
         }
 		
 		//Jumping!!
@@ -133,7 +136,7 @@ public class FirstPersonController : MonoBehaviour {
             isGrounded = false;
             canCheckForJump = false;
             Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, CalculateJumpVerticalSpeed(), rigidbody.velocity.z);
+            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, CalculateJumpVerticalSpeed(), GetComponent<Rigidbody>().velocity.z);
 
             Invoke("AllowJumpCheck", 2);
         }
@@ -152,21 +155,21 @@ public class FirstPersonController : MonoBehaviour {
 			targetVelocity = transform.TransformDirection(targetVelocity);
 			targetVelocity *= moveSpeed;
 			// Apply a force that attempts to reach our target velocity
-			Vector3 velocity = rigidbody.velocity;
+			Vector3 velocity = GetComponent<Rigidbody>().velocity;
 			Vector3 velocityChange = (targetVelocity - velocity);
 
 			velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
 			velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
 			velocityChange.y = 0;
 
-            rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+            GetComponent<Rigidbody>().AddForce(velocityChange, ForceMode.VelocityChange);
 
 			// Jump
 			//Manager.say("Jumping action go. Jumps Made: " + totalJumpsMade + " Jumps Allowed: " + totalJumpsAllowed, "eliot");
         }
 		
 
-		rigidbody.AddForce(new Vector3 (0, -GM._M.gravity * rigidbody.mass, 0));
+		GetComponent<Rigidbody>().AddForce(new Vector3 (0, -GM._M.gravity * GetComponent<Rigidbody>().mass, 0));
 		// We apply gravity manually for more tuning control
 
 
@@ -254,6 +257,11 @@ public class FirstPersonController : MonoBehaviour {
     {
         speedBuffKillStreakPowerUp = true;
     }
+
+	public void respawn()
+	{
+		transform.position = spawn;
+	}
 }
 
 
