@@ -35,7 +35,6 @@ public class GameMaster : MonoBehaviour {
 		public bool runningAllowed;
 		public bool miniMapEnabled;
         public bool drunkMode;
-        public bool drunkMode;
         public bool orthographic;
 
 		//###################################
@@ -64,40 +63,40 @@ public class GameMaster : MonoBehaviour {
 	private bool gameOver = false;
 
 	private KillStreak kills;
-	private bool gameOver = false;
     private Camera[] cameraList;
     public GameObject[] selectedCharacters = new GameObject[4];
     public GameObject[] allPossibleCharacters = new GameObject[8];
-    private int currentScene;
+    public int currentScene;
 	//private KillStreak kills;
 
+	void Awake()
+	{
+		DontDestroyOnLoad(transform.gameObject);
+		if (FindObjectsOfType(GetType()).Length > 1){
+			Destroy(gameObject);
+		}
+	}
+
 	void Start(){
-<<<<<<< local
 		kills = transform.GetComponent<KillStreak>();
-=======
         currentScene = Application.loadedLevel;
 		//kills = transform.GetComponent<KillStreak>();
         DontDestroyOnLoad(this);
 
 
->>>>>>> other
 		disabledChars = false;
 		if(Application.isEditor)Save_Values();
-		Screen.lockCursor = true;
+		//Screen.lockCursor = true;
 		
 		Load_Values();
 		gameObject.GetComponent<Camera>().pixelRect = new Rect(Screen.width/2 - sizeX/2, Screen.height/2 - sizeY/2, sizeX, sizeY);
 		if(_M.miniMapEnabled){
-<<<<<<< local
 			gameObject.GetComponent<Camera>().enabled = true;
 		}
 	}
-=======
-			gameObject.GetComponent<Camera>().enabled = true;
-		}
+		
 
-        
-	}
+
 
 
     public void SetOrthographic(bool orth)
@@ -130,7 +129,7 @@ public class GameMaster : MonoBehaviour {
     public void SpawnPlayers()
     {
         SetOrthographic(true);
-        Screen.lockCursor = true;
+       // Screen.lockCursor = true;
         GameObject[] spawnPoints = new GameObject[4];
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         for (int i = 0; i < 4; i++)
@@ -138,20 +137,21 @@ public class GameMaster : MonoBehaviour {
             GameObject temp = Instantiate(selectedCharacters[i], spawnPoints[i].transform.position, spawnPoints[i].transform.rotation) as GameObject;
         }
     }
->>>>>>> other
 
 	void Update(){
-        if (currentScene != Application.loadedLevel && Application.loadedLevel > 0)
+        if (currentScene != Application.loadedLevel && Application.loadedLevel >= 0)
         {
+			Debug.Log("current scene changed");
+			Start();
             SpawnPlayers();
-            currentScene = Application.loadedLevel;
+            //currentScene = Application.loadedLevel;
         }
 
 
         if (!disabledChars)
         {
             GameObject[] tempList = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject player in tempList)
+            /*foreach (GameObject player in tempList)
             {
                 //if robots are enabled
                 if (_M.robots)
@@ -178,7 +178,7 @@ public class GameMaster : MonoBehaviour {
                         player.SetActive(true);
                     }
                 }
-            }
+            }*/
             //GameObject[] tempList = GameObject.FindGameObjectsWithTag("Player");
             //for (int i = 0; i < tempList.Length; i++) //previously: foreach (GameObject player in tempList)
             //{
@@ -224,12 +224,15 @@ public class GameMaster : MonoBehaviour {
 				allPlayers[i].SetActive(false); //disables all but one player, making a winner.
 			}
 		}
-		if(GameObject.FindGameObjectsWithTag("Player").Length == 1){
-		        gameOver = true;
-				Screen.lockCursor = false;
-		}   
+		if (GameObject.FindGameObjectsWithTag ("Player").Length == 1) {
+						gameOver = true;
+						//Screen.lockCursor = false;
+				} 
+		else {
+			gameOver = false;
+		}
 
-        /*
+        
 		if (kills.getPlayer1Kills() > 2) {
 			Manager.say ("Player1 has killStreak", "jed");
 		}
@@ -267,4 +270,10 @@ public class GameMaster : MonoBehaviour {
 	public bool isGameOver(){
 		return gameOver;
 	}
+
+	public void SetGameOver(){
+		gameOver = false;
+	}
+
+
 }

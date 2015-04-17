@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Healthbar : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Healthbar : MonoBehaviour
 	private KillStreak kills;	
 	public Transform parentObject;
 	private int playerLives;
+	private DateTime canSpawn;
 
 	void Start()
 	{		
@@ -79,14 +81,25 @@ public class Healthbar : MonoBehaviour
 			}
 			else 
 			{
-				wait5Secs();
 				parentObject.GetComponent<FirstPersonController>().respawn();
 				modifyMaxHealth(GM, 0, 0);
 				resizeHP_Bars();
 				playerLives --;
 				Manager.say("Respawn", "jed");
 				Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt, "eliot");
+
+				/*if(DateTime.Now >= canSpawn){
+					parentObject.GetComponent<FirstPersonController>().respawn();
+					modifyMaxHealth(GM, 0, 0);
+					resizeHP_Bars();
+					playerLives --;
+					Manager.say("Respawn", "jed");
+					Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt, "eliot");
+
+				}*/
 			}
+			
+
 		}
 
 	}
@@ -119,9 +132,5 @@ public class Healthbar : MonoBehaviour
         currHealth = maxHealth;
         armor = givenArmor;
     }
-
-	public IEnumerator wait5Secs()
-	{
-		yield return new WaitForSeconds (5);
-	}
+	
 }
