@@ -44,7 +44,7 @@ public class Bullet_LAZAR : MonoBehaviour {
 				gameObject.transform.GetComponent<Bullet>();
 				speed = gameObject.transform.GetComponent<Bullet>().getSpeed();
 				owner = gameObject.transform.GetComponent<Bullet>().getOwner();
-				rigidbody.AddRelativeForce(speed);
+				GetComponent<Rigidbody>().AddRelativeForce(speed);
 			}
 		}
 	
@@ -54,7 +54,7 @@ public class Bullet_LAZAR : MonoBehaviour {
 		GameObject[] ps = GameObject.FindGameObjectsWithTag ("Player");
 		foreach(GameObject p in ps)
 		{
-			//p.rigidbody.AddExplosionForce(1000, transform.position, transform.localScale.magnitude*1000000);
+			Manager.say ("hi", "jed");//p.rigidbody.AddExplosionForce(1000, transform.position, transform.localScale.magnitude*1000000);
 		}
 
 		if(hitObject.transform.tag == "Player"){
