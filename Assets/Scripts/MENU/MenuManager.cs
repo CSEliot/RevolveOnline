@@ -56,7 +56,7 @@ public class MenuManager : MonoBehaviour {
         enabledChars[0] = true; //pill character cannot be disabled
         enabledChars[1] = GM._M.robots;
 
-        currentMenu = "char";
+        currentMenu = "main";
 	}
 	
 	// Update is called once per frame
@@ -89,9 +89,11 @@ public class MenuManager : MonoBehaviour {
             }
             if (Input.GetButtonDown("Start")) {
                 bool allConfirmed = true;
-                foreach (GameObject button in charConfirms) {
-                    if (button.activeSelf == true) {
-                        allConfirmed = false;
+                if (!isOnline) {
+                    for (int i = 0; i < charConfirms.Length - 1; i++) {
+                        if (charConfirms[i].activeSelf == true) {
+                            allConfirmed = false;
+                        }
                     }
                 }
                 if (allConfirmed) {
@@ -132,6 +134,7 @@ public class MenuManager : MonoBehaviour {
         else if (currentMenu == "main") {
             if (Input.GetButtonDown("Start")) {
                 SwitchMainMenu();
+                SetOnlineOffline(false);
                 SwitchCharacterSelection();
             }
         }
