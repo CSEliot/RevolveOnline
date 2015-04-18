@@ -47,7 +47,7 @@ public class MenuManager : MonoBehaviour {
     {      
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         
-        Screen.lockCursor = false;
+        //Screen.lockCursor = false;
 
         enabledMaps[0] = true; //basic map cannot be disabled
         enabledMaps[1] = GM._M.GridArena;
@@ -263,7 +263,9 @@ public class MenuManager : MonoBehaviour {
     {
         if (enabledMaps[currentMap])
         {
-            Application.LoadLevel(currentMap + 1);
+			Debug.Log(currentMap);
+			GM.currentScene = currentMap + 1;
+			Application.LoadLevel(currentMap + 1);
         }
     }
 }
