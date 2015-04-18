@@ -1,0 +1,2 @@
+Suggestion: Power ups are option changes.
+            Specific controls, like inverted, should just be control options.
