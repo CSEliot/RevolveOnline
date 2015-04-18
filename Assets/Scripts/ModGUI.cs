@@ -14,16 +14,20 @@ public class ModGUI : MonoBehaviour {
 	public bool changed = false;
 
 	public int MAX_CHANGES;
-
+	
+	private GameMaster GM;
 	void Start()
 	{
 		windowRect = new Rect(Screen.width/2-((Screen.width*.4f)/2), Screen.height/2-((Screen.height*.4f)/2), Screen.width*.40f, Screen.height*.40f);
 		original = GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M;
+		GM = GameObject.Find ("Game Master").GetComponent<GameMaster> ();
 	}
 
 	void OnGUI() {
-		if(GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().isGameOver())
-			windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "Game Modifiers");
+		if (GM.isGameOver()) {
+			windowRect = GUILayout.Window (0, windowRect, DoMyWindow, "Game Modifiers");
+		}
+
 	}
 
 	void DoMyWindow(int windowID) 
@@ -129,7 +133,7 @@ public class ModGUI : MonoBehaviour {
 				if(GUILayout.Button("Confirm"))
 				{
 					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().Save_Values();
-                    if (GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M.ColumnArena)
+                   /* if (GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M.ColumnArena)
                     {
     					Application.LoadLevel(3);
                     }
@@ -139,7 +143,9 @@ public class ModGUI : MonoBehaviour {
                     }
 					else{
 						Application.LoadLevel(1); 
-					}
+					}*/
+					GM.SetGameOver();
+					Application.LoadLevel("MenuMain");
 				}
 				if(GUILayout.Button("Revert"))
 				{
