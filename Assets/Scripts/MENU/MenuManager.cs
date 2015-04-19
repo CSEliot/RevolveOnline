@@ -173,7 +173,7 @@ public class MenuManager : MonoBehaviour {
             }
         }
         currentMenu = "char";
-        GM.SetOrthographic(charSelect.activeSelf); //Enable or disable orthographic camera
+        //GM.SetOrthographic(charSelect.activeSelf); //Enable or disable orthographic camera
     }
 
     public void SetOnlineOffline(bool isOn) {
@@ -190,7 +190,7 @@ public class MenuManager : MonoBehaviour {
         mapModels[currentMap].SetActive(mapSelect.activeSelf);                      //Show or hide the current map
         lockedCanvas.SetActive(!enabledMaps[currentMap] && mapSelect.activeSelf);   //Show or hide the "locked" message
 
-        GM.SetOrthographic(!mapSelect.activeSelf);                                  //Make the camera perspective if in the map menu and orthographic if leaving
+        //GM.SetOrthographic(!mapSelect.activeSelf);                                  //Make the camera perspective if in the map menu and orthographic if leaving
         currentMenu = "map";
     }
 
