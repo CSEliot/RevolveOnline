@@ -24,7 +24,7 @@ public class Bullet_LAZAR : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time - timeBorn > GM._M.bulletLife_Basic){
+		if(Time.time - timeBorn > GM._M.bulletLife_LAZAR){
 			Destroy(this.gameObject);	
 		}
 
@@ -43,7 +43,7 @@ public class Bullet_LAZAR : MonoBehaviour {
 			if(gotSpeed){
 				gameObject.transform.GetComponent<Bullet>();
 				speed = gameObject.transform.GetComponent<Bullet>().getSpeed();
-				owner = gameObject.transform.GetComponent<Bullet>().getOwner();
+                owner = gameObject.transform.GetComponent<Bullet>().getOwner().Substring(0, 8);
 				GetComponent<Rigidbody>().AddRelativeForce(speed);
 			}
 		}

@@ -12,10 +12,5 @@ public class setDrunkMode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (GM._M.drunkMode)
-        {
-            transform.GetComponent<TwirlEffect>().enabled = true;
-            transform.GetComponent<MotionBlur>().enabled = true;
-        }
 	}
 }

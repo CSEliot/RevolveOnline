@@ -46,7 +46,7 @@ public class Healthbar : MonoBehaviour
 
     //Percent of 100. So if you have >100 HP, 100% damage won't kill you.
 	public void takePercentDamage(float damagePercent, string owner){
-        if (armor >= 0)
+        if (armor > 0)
         {
             armor -= 100*damagePercent;
         }
@@ -61,6 +61,7 @@ public class Healthbar : MonoBehaviour
         }
         else
         {
+            //Manager.say("")
             totalDamageList.Add(owner, damagePercent);
         }
 		lastDamageDealt = owner;
@@ -110,7 +111,7 @@ public class Healthbar : MonoBehaviour
 		{
             Manager.say("Before add kill attempt", "always");
 			kills.addKill(lastDamageDealt);
-			kills.resetKill(parentObject.name);
+			kills.resetKill(parentObject.name.Substring(0, 8));
             Manager.say("After add kill attempt", "always");
             return true;
 		}

@@ -37,7 +37,7 @@ public class MenuManager : MonoBehaviour {
     bool isOnline = true;
 
     public const int NUM_CHARS = 2;
-    public const int NUM_MAPS = 3;
+    public const int NUM_MAPS = 4;
 
 
 
@@ -49,9 +49,11 @@ public class MenuManager : MonoBehaviour {
         
         //Screen.lockCursor = false;
 
-        enabledMaps[0] = true; //basic map cannot be disabled
-        enabledMaps[1] = GM._M.GridArena;
-        enabledMaps[2] = GM._M.ColumnArena;
+        enabledMaps[0] = true; //blank map cannot be disabled
+        enabledMaps[1] = GM._M.BasicArena;
+        enabledMaps[2] = GM._M.GridArena;
+        enabledMaps[3] = GM._M.ColumnArena;
+
 
         enabledChars[0] = true; //pill character cannot be disabled
         enabledChars[1] = GM._M.robots;
@@ -240,6 +242,7 @@ public class MenuManager : MonoBehaviour {
             charConfirms[player].SetActive(false);
         }
     }
+
     //Selects the next or previous map as the map to start the game with
     public void changeMap(int direction)
     {
@@ -263,7 +266,7 @@ public class MenuManager : MonoBehaviour {
     {
         if (enabledMaps[currentMap])
         {
-			Debug.Log(currentMap);
+			Debug.Log("Current Map is: " + currentMap);
 			GM.currentScene = currentMap + 1;
 			Application.LoadLevel(currentMap + 1);
         }
