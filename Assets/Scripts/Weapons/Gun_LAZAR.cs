@@ -9,8 +9,9 @@ public class Gun_LAZAR : MonoBehaviour {
 	
 	private bool equipped;
 	public bool spawnedEquipped;
-	private string Fire_str = " "; 
-	
+	private string Fire_str = " ";
+    private string Drop_str = " ";
+
 	private float fireSpd;
 	
 	public GameObject bullet_prefab;
@@ -38,6 +39,12 @@ public class Gun_LAZAR : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (equipped && Input.GetButtonDown(Drop_str))
+        {
+            Dropped();
+        }
+
 		fireSpd -= Time.deltaTime*60;
 		
 		Quaternion tempRot = gameObject.transform.rotation;
@@ -50,8 +57,8 @@ public class Gun_LAZAR : MonoBehaviour {
 			for(int i=0; i < 5; i++)
 			{
 				tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position+offset,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
-				tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*4 )*(GM._M.bulletSpeed_Basic*5), owner);
-				fireSpd = GM._M.fireInterval_Basic + intervalModifier;
+				tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_LAZAR*4 )*(GM._M.bulletSpeed_LAZAR*5), owner);
+				fireSpd = GM._M.fireInterval_LAZAR + intervalModifier;
 				offset += new Vector3(Random.Range(-.10f, .10f), Random.Range(-.1f, .1f), 0);
 			}
 		}
@@ -67,6 +74,7 @@ public class Gun_LAZAR : MonoBehaviour {
 			equipped = true;
 			//transform.localScale.Set(startScale.x, startScale.y, startScale.z);
 			Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
+            Drop_str = transform.GetComponentInParent<FirstPersonController>().GetDrop_Str();
 			owner = transform.parent.parent.name;
 		}
 	}
@@ -80,9 +88,17 @@ public class Gun_LAZAR : MonoBehaviour {
 			equipped = true;
 			//transform.localScale.Set(startScale.x, startScale.y, startScale.z);
 			Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
+            Drop_str = transform.GetComponentInParent<FirstPersonController>().GetDrop_Str();
 			owner = transform.parent.parent.name;
 		}
 	}
+
+    public void Dropped()
+    {
+        equipped = false;
+        GameObject newParent = Instantiate(GameObject.Find("Game Master").GetComponent<KillStreak>().Pedestal, transform.position, transform.rotation) as GameObject;
+        transform.parent = newParent.transform;
+    }
 }
 
 

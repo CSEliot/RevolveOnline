@@ -42,6 +42,7 @@ public class FirstPersonController : MonoBehaviour {
 	private string Jump_str = "_Jump";
 	private string Dash_str = "_Run";
 	private string Zoom_str = "_Zoom";
+    private string Drop_str = "_Drop";
 	//==================================================================
 
     //PERSONAL CHARACTER MODIFIERS
@@ -90,7 +91,6 @@ public class FirstPersonController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
 		//player rotation
 		//left and right
         
@@ -114,6 +114,10 @@ public class FirstPersonController : MonoBehaviour {
 			zoom.undozoom();
 		}
 
+        if (Input.GetButtonDown(Drop_str))
+        {
+            DropGun();
+        }
 		//if (GM._M.canZoom && Input.GetButtonUp (Zoom_str)) {
 		//	zoom.undozoom();
 		//}
@@ -179,6 +183,11 @@ public class FirstPersonController : MonoBehaviour {
 		}
 	}
 
+    public void DropGun()
+    {
+        gunEquipped = false;
+    }
+
 	private float CalculateJumpVerticalSpeed () {
 		// From the jump height and gravity we deduce the upwards speed 
 		// for the character to reach at the apex.
@@ -197,6 +206,7 @@ public class FirstPersonController : MonoBehaviour {
 			Jump_str = "p1" + Jump_str;
 			Dash_str = "p1" + Dash_str;
 			Zoom_str = "p1" + Zoom_str;
+            Drop_str = "p1" + Drop_str;
 		}else if(pName.Contains("2")){
 			Fire_str = "p2" + Fire_str;
 			FWmv_str = "p2" + FWmv_str;
@@ -206,6 +216,7 @@ public class FirstPersonController : MonoBehaviour {
 			Jump_str = "p2" + Jump_str;
 			Dash_str = "p2" + Dash_str;
 			Zoom_str = "p2" + Zoom_str;
+            Drop_str = "p2" + Drop_str;
 		}else if(pName.Contains("3")){
 			Fire_str = "p3" + Fire_str;
 			FWmv_str = "p3" + FWmv_str;
@@ -215,6 +226,7 @@ public class FirstPersonController : MonoBehaviour {
 			Jump_str = "p3" + Jump_str;
 			Dash_str = "p3" + Dash_str;
 			Zoom_str = "p3" + Zoom_str;
+            Drop_str = "p3" + Drop_str;
 		}else if(pName.Contains("4")){
 			Fire_str = "p4" + Fire_str;
 			FWmv_str = "p4" + FWmv_str;
@@ -224,10 +236,17 @@ public class FirstPersonController : MonoBehaviour {
 			Jump_str = "p4" + Jump_str;
 			Dash_str = "p4" + Dash_str;
 			Zoom_str = "p4" + Zoom_str;
+            Drop_str = "p4" + Drop_str;
 		}
 	}
     public string GetFire_Str(){
         return Fire_str;
+    }
+
+    public string GetDrop_Str()
+    {
+        Debug.Log("Sending Drop_str: " + Drop_str);
+        return Drop_str;
     }
 
     // piece of delays OnCollisionStay's ground check so we can't jump for 2 seconds after
