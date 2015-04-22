@@ -36,7 +36,7 @@ public class MenuManager : MonoBehaviour {
     string player = "";
     bool isOnline = true;
 
-    public const int NUM_CHARS = 2;
+    public const int NUM_CHARS = 3;
     public const int NUM_MAPS = 4;
 
 
@@ -57,6 +57,7 @@ public class MenuManager : MonoBehaviour {
 
         enabledChars[0] = true; //pill character cannot be disabled
         enabledChars[1] = GM._M.robots;
+        enabledChars[2] = GM._M.HueBots;
 
         currentMenu = "main";
 	}
