@@ -68,11 +68,16 @@ public class GameMaster : MonoBehaviour {
 
 		//Characters-------------------------
 		public bool robots;
+		public bool HueBots;
 
 		//Maps-------------------------------
         public bool BasicArena;
 		public bool ColumnArena;
 		public bool GridArena;
+		
+		//GUNS
+		public bool Sniper;
+		public bool Shotgun;
 	}
 
 	private string magicWinButton = "\\";
@@ -169,7 +174,6 @@ public class GameMaster : MonoBehaviour {
     public void SpawnPlayers()
     {
         //SetOrthographic(true);
-       // Screen.lockCursor = true;
         GameObject[] spawnPoints = new GameObject[4];
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         Debug.Log("Selected CHar size: " + selectedCharacters.Length);
@@ -218,8 +222,10 @@ public class GameMaster : MonoBehaviour {
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+			if(gameOver == false){
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			}
         }
 
 		if(Input.GetKeyDown(magicWinButton)){
@@ -231,6 +237,7 @@ public class GameMaster : MonoBehaviour {
 		}
 		if (GameObject.FindGameObjectsWithTag ("Player").Length == 1) {
             gameOver = true;
+            gameObject.GetComponent<Camera>().enabled = false; //disable minimap
             gameObject.GetComponent<Camera>().enabled = false; //disable minimap
             Destroy(GameObject.FindGameObjectsWithTag("Player")[0]);
             GetComponent<ModGUI>().SetNewlyGameOverTrue();

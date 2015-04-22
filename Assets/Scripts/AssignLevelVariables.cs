@@ -36,6 +36,17 @@ public class AssignLevelVariables : MonoBehaviour {
         }
         GUISetup = true;
         healthbarSetup = true;
+        
+        
+        bool SniperEnabled = GM.Sniper;
+        bool ShotgunEnabled = GM.Shotgun;
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Pedestal")){
+			if(!GM.Sniper && g.transform.GetChild(0).name == "Gun_Sniper_Rifle"){
+				g.transform.GetChild(0).gameObject.SetActive(false);
+			}else if( !GM.Shotgun && g.transform.GetChild(0).name == "LAZAR"){
+				g.transform.GetChild(0).gameObject.SetActive(false);
+			}
+        }
 	}
 	
     public void SetWinnerGUI(string winner){
