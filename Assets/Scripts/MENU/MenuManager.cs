@@ -36,11 +36,21 @@ public class MenuManager : MonoBehaviour {
     string player = "";
     bool isOnline = true;
 
-    public const int NUM_CHARS = 3;
-    public const int NUM_MAPS = 4;
+<<<<<<< working copy
+    public int NUM_CHARS = 3;
+    public int NUM_MAPS = 4;
+
+
+    void Awake() {
+        if (GameObject.FindObjectsOfType<MenuManager>().Length > 1) {
+            Debug.Log("multiple mm's");
+        }
+    }
+=======
 
 
 
+>>>>>>> destination
 
 	// Use this for initialization
 	void Start () 
@@ -64,7 +74,11 @@ public class MenuManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (GameObject.FindObjectsOfType<MenuManager>().Length > 1) {
+            Debug.Log("multiple mm's");
+        }
         //controller inputs
+        //if in char selection menu
         if (currentMenu == "char") {
             for (int i = 0; i < 4; i++) {
                 player = "p" + (i+1);
@@ -101,7 +115,7 @@ public class MenuManager : MonoBehaviour {
                 }
                 if (allConfirmed) {
                     SwitchCharacterSelection();
-                    SwitchMapSelection(); 
+                    SwitchMapSelection();
                 }
             }
             else if (Input.GetButtonDown("Cancel")) {
@@ -109,6 +123,7 @@ public class MenuManager : MonoBehaviour {
                 SwitchMainMenu();
             }
         }
+        //if in map selection menu
         else if (currentMenu == "map") {
             if (Input.GetAxis(winner + "_Strafe") < -0.1) {
                 if (canSwitchMap) {
@@ -127,6 +142,7 @@ public class MenuManager : MonoBehaviour {
             }
 
             if (Input.GetButtonDown("Start")) {
+                Debug.Log("FGDFG");
                 PlayGame();
             }
             else if (Input.GetButtonDown("Cancel")) {
@@ -134,6 +150,7 @@ public class MenuManager : MonoBehaviour {
                 SwitchCharacterSelection();
             }
         }
+        //if in main menu
         else if (currentMenu == "main") {
             if (Input.GetButtonDown("Start")) {
                 SwitchMainMenu();
@@ -229,7 +246,7 @@ public class MenuManager : MonoBehaviour {
             //Enable or disable left arrow
             charArrows[player].SetActive(currentChars[player] > 0);
             //Enable or disable right arrow
-            charArrows[player + charArrows.Length / (NUM_CHARS)].SetActive(currentChars[player] < charArrows.Length / 5 - 1); 
+            charArrows[player + charArrows.Length / 2].SetActive(currentChars[player] != NUM_CHARS - 1); 
         }
     }
 
@@ -265,11 +282,17 @@ public class MenuManager : MonoBehaviour {
 
     public void PlayGame()
     {
+<<<<<<< working copy
+        if (enabledMaps[currentMap]) {
+            Debug.Log("Current Map is: " + currentMap); //happening multiple times
+            Application.LoadLevel(currentMap + 1);
+=======
         if (enabledMaps[currentMap])
         {
 			Debug.Log("Current Map is: " + currentMap);
 			GM.currentScene = currentMap + 1;
 			Application.LoadLevel(currentMap + 1);
+>>>>>>> destination
         }
     }
 }
