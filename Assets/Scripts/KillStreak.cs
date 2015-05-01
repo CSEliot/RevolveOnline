@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class KillStreak : MonoBehaviour {
 
@@ -8,24 +9,49 @@ public class KillStreak : MonoBehaviour {
 	private int p3Kills;
 	private int p4Kills;
 
+    public GameObject Pedestal; //saving here cuz i'm lazy
+
+    private string winner;
+    private int maxKills;
+    private GameMaster.GAME_VALUES GM;
 
 
 	public void addKill(string killer) {
 
 		if (killer == "Player 1") {
 			p1Kills ++;
+            if (GM.kills_tracking)
+            {
+                GameObject.Find("GUI Camera 1").transform.GetChild(0).GetChild(1).
+                    GetComponent<Text>().text = "Kills: " + p1Kills;
+            }
 		}
 		else if (killer == "Player 2") {
 			p2Kills ++;
+            if (GM.kills_tracking)
+            {
+                GameObject.Find("GUI Camera 2").transform.GetChild(0).GetChild(1).
+                    GetComponent<Text>().text = "Kills: " + p2Kills;
+            }
 		}
 
 		else if (killer == "Player 3") {
 			p3Kills ++;
+            if (GM.kills_tracking)
+            {
+                GameObject.Find("GUI Camera 3").transform.GetChild(0).GetChild(1).
+                    GetComponent<Text>().text = "Kills: " + p3Kills;
+            }
 		}
 
         else if (killer == "Player 4")
         {
             p4Kills++;
+            if (GM.kills_tracking)
+            {
+                GameObject.Find("GUI Camera 4").transform.GetChild(0).GetChild(1).
+                    GetComponent<Text>().text = "Kills: " + p4Kills;
+            }
         }
         else
         {
@@ -33,9 +59,67 @@ public class KillStreak : MonoBehaviour {
         }
 	}
 
+    public string GetWinner()
+    {
+        if (p1Kills > maxKills)
+        {
+            maxKills = p1Kills;
+            winner = "Player 1";
+        }
+        if (p2Kills > maxKills)
+        {
+            maxKills = p2Kills;
+            winner = "Player 2";
+        }
+        if (p3Kills > maxKills)
+        {
+            maxKills = p3Kills;
+            winner = "Player 3";
+        }
+        if (p4Kills > maxKills)
+        {
+            maxKills = p4Kills;
+            winner = "Player 4";
+        }
+        if (maxKills == 0)
+        {
+            return "No One";
+        }
+        return winner;
+    }
+
+    public int GetWinningKills()
+    {
+        if (p1Kills > maxKills)
+        {
+            maxKills = p1Kills;
+            winner = "Player 1";
+        }
+        if (p2Kills > maxKills)
+        {
+            maxKills = p2Kills;
+            winner = "Player 2";
+        }
+        if (p3Kills > maxKills)
+        {
+            maxKills = p3Kills;
+            winner = "Player 3";
+        }
+        if (p4Kills > maxKills)
+        {
+            maxKills = p4Kills;
+            winner = "Player 4";
+        }
+        if (maxKills <= 0)
+        {
+            return 1;
+        }
+        return maxKills;
+    }
+
 
 	public void resetKill(string deceased) {
-        Manager.say("The player who died is: " + deceased, "eliot");
+        Debug.Log("The player who died is: " + deceased);
 		if (deceased == "Player 1") {
 			p1Kills = 0;
 		}
@@ -63,6 +147,8 @@ public class KillStreak : MonoBehaviour {
 		p2Kills = 0;
 		p3Kills = 0;
 		p4Kills = 0;
+        maxKills = -1;
+        GM = GameObject.Find("Game Master").GetComponent<GameMaster>()._M;
 	}
 	
 	// Update is called once per frame
@@ -71,9 +157,17 @@ public class KillStreak : MonoBehaviour {
         if (p4Kills > 1)
         {
             Manager.say("GOT MILION KILLS DO THING", "eliot");
-            GameObject.Find("Player 4").GetComponent<FirstPersonController>().increaseSpeed(1090);
+            //GameObject.Find("Player 4").GetComponent<FirstPersonController>().increaseSpeed(1090);
         }
 	}
+
+    public void NewGame(){
+        p1Kills = 0;
+        p2Kills = 0;
+        p3Kills = 0;
+        p4Kills = 0;
+        maxKills = -1;
+    }
 
 	public int getPlayer1Kills(){
 		return p1Kills;

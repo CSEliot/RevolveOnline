@@ -24,7 +24,7 @@ public class Bullet_Sniper_Rifle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time - timeBorn > GM._M.bulletLife_Basic){
+		if(Time.time - timeBorn > GM._M.bulletLife_SNIPER){
 			Destroy(this.gameObject);	
 		}
 
@@ -43,7 +43,7 @@ public class Bullet_Sniper_Rifle : MonoBehaviour {
 			if(gotSpeed){
 				gameObject.transform.GetComponent<Bullet>();
 				speed = gameObject.transform.GetComponent<Bullet>().getSpeed();
-				owner = gameObject.transform.GetComponent<Bullet>().getOwner();
+                owner = gameObject.transform.GetComponent<Bullet>().getOwner().Substring(0, 8);
 				GetComponent<Rigidbody>().AddRelativeForce(speed);
 			}
 		}
@@ -53,7 +53,7 @@ public class Bullet_Sniper_Rifle : MonoBehaviour {
 	void OnCollisionEnter(Collision hitObject){
 		if(hitObject.transform.tag == "Player"){
 			Manager.say("This bullet has hit: " + hitObject.gameObject.name, "berto");
-			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.50f, owner);
+			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.5f, owner);
 			Destroy(this.gameObject);
 		}
 		else{
@@ -61,14 +61,15 @@ public class Bullet_Sniper_Rifle : MonoBehaviour {
 		}
 	}	
 
+    /*
 	void OnCollisionStay(Collision hitObject){
 		if(hitObject.transform.tag == "Player"){
 			Manager.say("This bullet has hit: " + hitObject.gameObject.name, "berto2");
-			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.50f, owner);
+			hitObject.transform.GetComponentInChildren<Healthbar>().takePercentDamage(0.5f, owner);
 			Destroy(this.gameObject);
 		}
 		else{
 			Destroy(this.gameObject);
 		}
-	}
+	}*/
 }

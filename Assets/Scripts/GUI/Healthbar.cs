@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Healthbar : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class Healthbar : MonoBehaviour
 	
 	private KillStreak kills;	
 	public Transform parentObject;
+	private int playerLives;
+	private DateTime canSpawn;
 
 	void Start()
 	{		
@@ -37,11 +40,13 @@ public class Healthbar : MonoBehaviour
 		//Debug.Log("Size after assigned=" + size);
 		//animator = transform.parent.GetComponent<Animator>();
         totalDamageList = new Dictionary<string, float>();
+		playerLives = GM._M.playerLives;
+		Manager.say ("PLayer Lives: " + playerLives + parentObject, "jed");
 	}
 
     //Percent of 100. So if you have >100 HP, 100% damage won't kill you.
 	public void takePercentDamage(float damagePercent, string owner){
-        if (armor >= 0)
+        if (armor > 0)
         {
             armor -= 100*damagePercent;
         }
@@ -56,6 +61,7 @@ public class Healthbar : MonoBehaviour
         }
         else
         {
+            //Manager.say("")
             totalDamageList.Add(owner, damagePercent);
         }
 		lastDamageDealt = owner;
@@ -69,10 +75,32 @@ public class Healthbar : MonoBehaviour
 
 	void FixedUpdate()
 	{
-
 		if(isDead()){
-			Destroy(this.transform.parent.gameObject);
-			Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt, "eliot");
+			if(playerLives <= 0){
+				Destroy(this.transform.parent.gameObject);
+				Manager.say("Forever dead.", "jed");
+			}
+			else 
+			{
+				parentObject.GetComponent<FirstPersonController>().respawn();
+				modifyMaxHealth(GM, 0, 0);
+				resizeHP_Bars();
+				playerLives --;
+				Manager.say("Respawn", "jed");
+				Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt, "eliot");
+
+				/*if(DateTime.Now >= canSpawn){
+					parentObject.GetComponent<FirstPersonController>().respawn();
+					modifyMaxHealth(GM, 0, 0);
+					resizeHP_Bars();
+					playerLives --;
+					Manager.say("Respawn", "jed");
+					Manager.say(transform.parent.name + " was murderized by: " + lastDamageDealt, "eliot");
+
+				}*/
+			}
+			
+
 		}
 
 	}
@@ -83,7 +111,7 @@ public class Healthbar : MonoBehaviour
 		{
             Manager.say("Before add kill attempt", "always");
 			kills.addKill(lastDamageDealt);
-			kills.resetKill(parentObject.name);
+			kills.resetKill(parentObject.name.Substring(0, 8));
             Manager.say("After add kill attempt", "always");
             return true;
 		}
@@ -105,4 +133,5 @@ public class Healthbar : MonoBehaviour
         currHealth = maxHealth;
         armor = givenArmor;
     }
+	
 }
