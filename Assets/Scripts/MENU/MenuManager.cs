@@ -36,7 +36,6 @@ public class MenuManager : MonoBehaviour {
     string player = "";
     bool isOnline = true;
 
-<<<<<<< working copy
     public int NUM_CHARS = 3;
     public int NUM_MAPS = 4;
 
@@ -46,11 +45,6 @@ public class MenuManager : MonoBehaviour {
             Debug.Log("multiple mm's");
         }
     }
-=======
-
-
-
->>>>>>> destination
 
 	// Use this for initialization
 	void Start () 
@@ -142,7 +136,6 @@ public class MenuManager : MonoBehaviour {
             }
 
             if (Input.GetButtonDown("Start")) {
-                Debug.Log("FGDFG");
                 PlayGame();
             }
             else if (Input.GetButtonDown("Cancel")) {
@@ -282,17 +275,10 @@ public class MenuManager : MonoBehaviour {
 
     public void PlayGame()
     {
-<<<<<<< working copy
-        if (enabledMaps[currentMap]) {
-            Debug.Log("Current Map is: " + currentMap); //happening multiple times
-            Application.LoadLevel(currentMap + 1);
-=======
         if (enabledMaps[currentMap])
         {
 			Debug.Log("Current Map is: " + currentMap);
-			GM.currentScene = currentMap + 1;
 			Application.LoadLevel(currentMap + 1);
->>>>>>> destination
         }
     }
 }
