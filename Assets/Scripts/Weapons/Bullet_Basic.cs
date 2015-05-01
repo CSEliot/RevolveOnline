@@ -43,7 +43,7 @@ public class Bullet_Basic : MonoBehaviour {
 			if(gotSpeed){
 				gameObject.transform.GetComponent<Bullet>();
 				speed = gameObject.transform.GetComponent<Bullet>().getSpeed();
-				owner = gameObject.transform.GetComponent<Bullet>().getOwner();
+				owner = gameObject.transform.GetComponent<Bullet>().getOwner().Substring(0, 8);
 				GetComponent<Rigidbody>().AddRelativeForce(speed);
 			}
 		}

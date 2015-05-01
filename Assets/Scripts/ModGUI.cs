@@ -6,28 +6,43 @@ using System;
 public class ModGUI : MonoBehaviour {
 
 	public Vector2 selection;
-	public Rect windowRect;
+	private Rect windowRect;
 
 	private GameMaster.GAME_VALUES original; 
 	private float[] changes_made = new float[256];
 
 	public bool changed = false;
 
-	public int MAX_CHANGES;
+    private bool NewlyGameOver;
 
+	private int MAX_CHANGES = 1;
+	
+	private GameMaster GM;
 	void Start()
 	{
-		windowRect = new Rect(Screen.width/2-((Screen.width*.4f)/2), Screen.height/2-((Screen.height*.4f)/2), Screen.width*.40f, Screen.height*.40f);
-		original = GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ()._M;
+        NewlyGameOver = true;
+        GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
 	}
 
 	void OnGUI() {
-		if(GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().isGameOver())
-			windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "Game Modifiers");
+        windowRect = new Rect(Screen.width / 4, Screen.height / 4, Screen.width * .4f, Screen.height * .4f);
+		if (GM.isGameOver()) {
+			windowRect = GUILayout.Window (0, windowRect, DoMyWindow, "Game Modifiers");
+		}
 	}
 
 	void DoMyWindow(int windowID) 
 	{
+        if (NewlyGameOver)
+        {
+            Debug.Log("New Game Over!");
+            //windowRect = new Rect(Screen.width / 2 - ((Screen.width * .4f) / 2), Screen.height / 2 - ((Screen.height * .4f) / 2), Screen.width * .60f, Screen.height * .60f);
+            original = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M;
+            GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+            NewlyGameOver = false;
+        }
+
+
 		selection = GUILayout.BeginScrollView(selection, GUILayout.Width(Screen.width*.40f), GUILayout.Height(Screen.height*.40f));
 
 		//get dat game masta
@@ -129,7 +144,11 @@ public class ModGUI : MonoBehaviour {
 				if(GUILayout.Button("Confirm"))
 				{
 					GameObject.FindGameObjectWithTag ("GM").GetComponent<GameMaster> ().Save_Values();
-                    if (GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M.ColumnArena)
+                    GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>().Load_Values();
+                    windowRect = new Rect(Screen.width / 2 - ((Screen.width * .4f) / 2), Screen.height / 2 - ((Screen.height * .4f) / 2), Screen.width * .40f, Screen.height * .40f);
+                    original = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M;
+                    GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
+                   /* if (GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>()._M.ColumnArena)
                     {
     					Application.LoadLevel(3);
                     }
@@ -139,7 +158,9 @@ public class ModGUI : MonoBehaviour {
                     }
 					else{
 						Application.LoadLevel(1); 
-					}
+					}*/
+					GM.SetGameOver();
+					Application.LoadLevel("MenuMain");
 				}
 				if(GUILayout.Button("Revert"))
 				{
@@ -156,6 +177,16 @@ public class ModGUI : MonoBehaviour {
 			}
 		}
 	}
+
+    public void SetNewlyGameOverTrue()
+    {
+        NewlyGameOver = true;
+    }
+
+    public void SetMaxChanges(int maxChanges)
+    {
+        MAX_CHANGES = maxChanges;
+    }
 
 	private bool oneChangeMade(GameMaster.GAME_VALUES mm)
 	{

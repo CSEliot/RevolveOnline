@@ -36,32 +36,43 @@ public class MenuManager : MonoBehaviour {
     string player = "";
     bool isOnline = true;
 
-    public const int NUM_CHARS = 2;
-    public const int NUM_MAPS = 3;
+    public int NUM_CHARS = 3;
+    public int NUM_MAPS = 4;
 
 
-
+    void Awake() {
+        if (GameObject.FindObjectsOfType<MenuManager>().Length > 1) {
+            Debug.Log("multiple mm's");
+        }
+    }
 
 	// Use this for initialization
 	void Start () 
     {      
         GM = GameObject.Find("Game Master").GetComponent<GameMaster>();
         
-        Screen.lockCursor = false;
+        //Screen.lockCursor = false;
 
-        enabledMaps[0] = true; //basic map cannot be disabled
-        enabledMaps[1] = GM._M.GridArena;
-        enabledMaps[2] = GM._M.ColumnArena;
+        enabledMaps[0] = true; //blank map cannot be disabled
+        enabledMaps[1] = GM._M.BasicArena;
+        enabledMaps[2] = GM._M.GridArena;
+        enabledMaps[3] = GM._M.ColumnArena;
+
 
         enabledChars[0] = true; //pill character cannot be disabled
         enabledChars[1] = GM._M.robots;
+        enabledChars[2] = GM._M.HueBots;
 
         currentMenu = "main";
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (GameObject.FindObjectsOfType<MenuManager>().Length > 1) {
+            Debug.Log("multiple mm's");
+        }
         //controller inputs
+        //if in char selection menu
         if (currentMenu == "char") {
             for (int i = 0; i < 4; i++) {
                 player = "p" + (i+1);
@@ -98,7 +109,7 @@ public class MenuManager : MonoBehaviour {
                 }
                 if (allConfirmed) {
                     SwitchCharacterSelection();
-                    SwitchMapSelection(); 
+                    SwitchMapSelection();
                 }
             }
             else if (Input.GetButtonDown("Cancel")) {
@@ -106,6 +117,7 @@ public class MenuManager : MonoBehaviour {
                 SwitchMainMenu();
             }
         }
+        //if in map selection menu
         else if (currentMenu == "map") {
             if (Input.GetAxis(winner + "_Strafe") < -0.1) {
                 if (canSwitchMap) {
@@ -131,6 +143,7 @@ public class MenuManager : MonoBehaviour {
                 SwitchCharacterSelection();
             }
         }
+        //if in main menu
         else if (currentMenu == "main") {
             if (Input.GetButtonDown("Start")) {
                 SwitchMainMenu();
@@ -173,7 +186,7 @@ public class MenuManager : MonoBehaviour {
             }
         }
         currentMenu = "char";
-        GM.SetOrthographic(charSelect.activeSelf); //Enable or disable orthographic camera
+        //GM.SetOrthographic(charSelect.activeSelf); //Enable or disable orthographic camera
     }
 
     public void SetOnlineOffline(bool isOn) {
@@ -190,7 +203,7 @@ public class MenuManager : MonoBehaviour {
         mapModels[currentMap].SetActive(mapSelect.activeSelf);                      //Show or hide the current map
         lockedCanvas.SetActive(!enabledMaps[currentMap] && mapSelect.activeSelf);   //Show or hide the "locked" message
 
-        GM.SetOrthographic(!mapSelect.activeSelf);                                  //Make the camera perspective if in the map menu and orthographic if leaving
+        //GM.SetOrthographic(!mapSelect.activeSelf);                                  //Make the camera perspective if in the map menu and orthographic if leaving
         currentMenu = "map";
     }
 
@@ -226,7 +239,7 @@ public class MenuManager : MonoBehaviour {
             //Enable or disable left arrow
             charArrows[player].SetActive(currentChars[player] > 0);
             //Enable or disable right arrow
-            charArrows[player + charArrows.Length / (NUM_CHARS)].SetActive(currentChars[player] < charArrows.Length / 5 - 1); 
+            charArrows[player + charArrows.Length / 2].SetActive(currentChars[player] != NUM_CHARS - 1); 
         }
     }
 
@@ -240,6 +253,7 @@ public class MenuManager : MonoBehaviour {
             charConfirms[player].SetActive(false);
         }
     }
+
     //Selects the next or previous map as the map to start the game with
     public void changeMap(int direction)
     {
@@ -263,7 +277,8 @@ public class MenuManager : MonoBehaviour {
     {
         if (enabledMaps[currentMap])
         {
-            Application.LoadLevel(currentMap + 1);
+			Debug.Log("Current Map is: " + currentMap);
+			Application.LoadLevel(currentMap + 1);
         }
     }
 }

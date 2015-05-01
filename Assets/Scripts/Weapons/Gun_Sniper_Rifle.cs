@@ -9,7 +9,8 @@ public class Gun_Sniper_Rifle : MonoBehaviour {
 
 	private bool equipped;
     public bool spawnedEquipped;
-	private string Fire_str = " "; 
+	private string Fire_str = " ";
+    private string Drop_str = " ";
 
 	private float fireSpd;
 
@@ -23,7 +24,7 @@ public class Gun_Sniper_Rifle : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		fireSpd = 0;
-		speedMod = 20;
+		speedMod = 15;
 
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
 
@@ -38,6 +39,13 @@ public class Gun_Sniper_Rifle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        //Debug.Log("GUN HAS EQUIP: " + equipped);
+
+        if (equipped && Input.GetButtonDown(Drop_str))
+        {
+            Dropped();
+        }
 		fireSpd -= Time.deltaTime*60;
 
 		Quaternion tempRot = gameObject.transform.rotation;
@@ -46,8 +54,8 @@ public class Gun_Sniper_Rifle : MonoBehaviour {
 			GameObject tempBullet;
             //the gun has a bullet spawn component found via getchild(0).transform.position 
 			tempBullet = Instantiate(bullet_prefab, transform.GetChild(0).transform.position,  tempRot*Quaternion.Euler(new Vector3(90f,0f,0f))) as GameObject;
-			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_Basic*speedMod)*(GM._M.bulletSpeed_Basic*speedMod), Owner.name);
-			fireSpd = GM._M.fireInterval_Basic+speedMod;
+			tempBullet.GetComponent<Bullet>().setSpeedandOwner(Vector3.up * (GM._M.bulletSpeed_SNIPER)*(GM._M.bulletSpeed_SNIPER), Owner.name);
+			fireSpd = GM._M.fireInterval_SNIPER;
 		}
 	}
 
@@ -61,6 +69,7 @@ public class Gun_Sniper_Rifle : MonoBehaviour {
             equipped = true;
             //transform.localScale.Set(startScale.x, startScale.y, startScale.z);
             Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
+            Drop_str = transform.GetComponentInParent<FirstPersonController>().GetDrop_Str();
 		}
 	}
 
@@ -73,8 +82,16 @@ public class Gun_Sniper_Rifle : MonoBehaviour {
 			equipped = true;
 			//transform.localScale.Set(startScale.x, startScale.y, startScale.z);
             Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
+            Drop_str = transform.GetComponentInParent<FirstPersonController>().GetDrop_Str();
             Owner = player.gameObject;
 		}
 	}
+
+    public void Dropped()
+    {
+        equipped = false;
+        GameObject newParent = Instantiate(GameObject.Find("Game Master").GetComponent<KillStreak>().Pedestal, transform.position, transform.rotation) as GameObject;
+        transform.parent = newParent.transform;
+    }
 }
 

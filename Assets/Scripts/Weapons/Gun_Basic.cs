@@ -9,7 +9,8 @@ public class Gun_Basic : MonoBehaviour {
 
 	private bool equipped;
     public bool spawnedEquipped;
-	private string Fire_str = " "; 
+	private string Fire_str = " ";
+    private string Drop_str = " ";
 
 	private float fireSpd;
 
@@ -22,6 +23,7 @@ public class Gun_Basic : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		fireSpd = 0;
 
 		GM  = GameObject.Find("Game Master").GetComponent<GameMaster>();
@@ -37,6 +39,12 @@ public class Gun_Basic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (equipped && Input.GetButtonDown(Drop_str))
+        {
+            Dropped();
+        }
+
 		fireSpd -= Time.deltaTime*60;
 
 		Quaternion tempRot = gameObject.transform.rotation;
@@ -60,20 +68,30 @@ public class Gun_Basic : MonoBehaviour {
             equipped = true;
             //transform.localScale.Set(startScale.x, startScale.y, startScale.z);
             Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
+            Drop_str = transform.GetComponentInParent<FirstPersonController>().GetDrop_Str();
 		}
 	}
 
 	//METHOD USED IF NO SPAWNING WITH GUN
 	void OnTriggerEnter(Collider player){
 		if(!equipped && player.transform.tag == "Player" && !player.GetComponent<FirstPersonController>().gunEquipped){
-			player.GetComponent<FirstPersonController>().gunEquipped = true;
+            
+            player.GetComponent<FirstPersonController>().gunEquipped = true;
             transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             player.GetComponent<GunSetup>().attachGun(gameObject, player.gameObject);
 			equipped = true;
 			//transform.localScale.Set(startScale.x, startScale.y, startScale.z);
             Fire_str = transform.GetComponentInParent<FirstPersonController>().GetFire_Str();
+            Drop_str = transform.GetComponentInParent<FirstPersonController>().GetDrop_Str();
             Owner = player.gameObject;
 		}
 	}
+
+    public void Dropped()
+    {
+        equipped = false;
+        GameObject newParent = Instantiate(GameObject.Find("Game Master").GetComponent<KillStreak>().Pedestal, transform.position, transform.rotation) as GameObject;
+        transform.parent = newParent.transform;
+    }
 }
 
