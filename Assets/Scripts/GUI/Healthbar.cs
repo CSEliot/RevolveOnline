@@ -73,9 +73,30 @@ public class Healthbar : MonoBehaviour
 		transform.GetChild(2).transform.localScale = new Vector3(sizeX, sizeY, sizeZ);//10f, 10f ,10f);//
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
 		if(isDead()){
+            if (parentObject.GetComponentInChildren<Weapon>().equipped) {
+                parentObject.GetComponentInChildren<Weapon>().Dropped();
+            }
+
+            //foreach (GameObject weapon in GameObject.FindGameObjectsWithTag("Weapon")) {
+            //    if (weapon.transform.parent == parentObject) {
+            //        if () {
+            //            weapon.Dropped();
+            //        }
+            //    }
+            //}
+            //if (parentObject.GetComponentInChildren<Gun_Basic>().equipped) {
+            //    parentObject.GetComponentInChildren<Gun_Basic>().Dropped();
+            //}
+            //else if (parentObject.GetComponentInChildren<Gun_Sniper_Rifle>().equipped) {
+            //    parentObject.GetComponentInChildren<Gun_Sniper_Rifle>().Dropped();
+            //}
+            //else if (parentObject.GetComponentInChildren<Gun_LAZAR>().equipped) {
+            //    parentObject.GetComponentInChildren<Gun_LAZAR>().Dropped();
+            //}
+            parentObject.GetComponent<FirstPersonController>().DropGun();
 			if(playerLives <= 0){
 				Destroy(this.transform.parent.gameObject);
 				Manager.say("Forever dead.", "jed");
