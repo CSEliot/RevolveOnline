@@ -33,7 +33,8 @@ public class GameMaster : MonoBehaviour {
 		public bool invertMouseY;
 		public bool noStrafe;
 		public bool canZoom;
-		public int playerLives;		
+		public int playerLives;
+        public bool allowAirMovement;
 
 		//###################################
 		//ENVIRONMENT VARIABLES
@@ -220,7 +221,7 @@ public class GameMaster : MonoBehaviour {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        else
+        else if(!gameOver)
         {
 			if(gameOver == false){
 				Cursor.lockState = CursorLockMode.Locked;

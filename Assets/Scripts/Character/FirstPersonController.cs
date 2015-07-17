@@ -27,10 +27,13 @@ public class FirstPersonController : MonoBehaviour {
 	private float moveSpeed;
 	private float totalJumpsAllowed;
 	private float totalJumpsMade;
-	private float floorInclineThreshold = 0.3f;
+	private float floorInclineThreshold = 0.2f;
+    private bool allowAirMovement;
 
 	private bool runningToggle = false;
     private bool canCheckForJump;
+
+    public bool isHueBot;
 
 	//ACTION STRINGS
 	//==================================================================
@@ -62,6 +65,7 @@ public class FirstPersonController : MonoBehaviour {
     //that aren't getting modified, so we can re-assign them.
     private Vector3 startingCameraRotation;
     private Vector3 newRotationAngle;
+    private Vector3 targetVelocity;
 
 	void Awake () {
 		GetComponent<Rigidbody>().freezeRotation = true;
@@ -82,7 +86,6 @@ public class FirstPersonController : MonoBehaviour {
 		totalJumpsAllowed = GM._M.jumpCount;
         transform.GetComponentInChildren<Healthbar>().modifyMaxHealth(GM, healthModifier, armorModifier);
 		zoom = transform.GetComponentInChildren<ZoomIn> ();
-		GM._M.canZoom = true;
 		spawn = transform.position;
 		//speed = Vector3.zero;
 	}
@@ -144,13 +147,34 @@ public class FirstPersonController : MonoBehaviour {
 
             Invoke("AllowJumpCheck", 2);
         }
-		if(totalJumpsMade==0.0f){
+
+        //ACTUAL MOVING
+		if(totalJumpsMade==0.0f || GM._M.allowAirMovement){
 
             //Gram being a massive jerk. DONT EVER ENABLE THIS. IM WARNING YOU
-			Vector3 targetVelocity;
-			if(!GM._M.invertControls)
+			
+			if(!GM._M.invertControls && !isHueBot)
 				targetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
-			else
+            else if (!GM._M.invertControls && isHueBot)
+            {
+                /*Manager.say("I AM HUEBOOT", "Eli");
+                Vector3 tempTargetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
+                if (tempTargetVelocity.magnitude > targetVelocity.magnitude)
+                {
+                    targetVelocity = tempTargetVelocity;
+                    Manager.say("tempTargetVelocity.magnitude > targetVelocity.magnitude", "Eli");
+                }*/
+                targetVelocity = new Vector3(Input.GetAxis(Strf_str), 0, Input.GetAxis(FWmv_str));
+            }
+            else if (GM._M.invertControls && isHueBot)
+            {
+                Vector3 tempTargetVelocity = targetVelocity = new Vector3(-Input.GetAxis(Strf_str), 0, -Input.GetAxis(FWmv_str));
+                if (tempTargetVelocity.magnitude > targetVelocity.magnitude)
+                {
+                    targetVelocity = tempTargetVelocity;
+                }
+            }
+            else
 				targetVelocity = new Vector3(-Input.GetAxis(Strf_str), 0, -Input.GetAxis(FWmv_str));
             // THis too. WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY?
 			if(GM._M.noStrafe)
@@ -267,7 +291,14 @@ public class FirstPersonController : MonoBehaviour {
 					totalJumpsMade = 0;
 					return;
 					//Manager.say("Collision normal is: " + tempVect);
-				}
+                }
+                else
+                {
+                   /* if (isHueBot)
+                    {
+                        targetVelocity = Vector3.zero;
+                    }*/
+                }
 			}
 		}
 	}
